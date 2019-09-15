@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.Dao.NoteDao">
+
+    <!--新建笔记，根据前台传入的文件名和摘要，在加上一些默认信息，配置一个note对象用于插入-->
+    <insert id="insertOneNote" parameterType="com.Entity.Note">
+        insert into note (userid,abstractnote,username,source,directory,isdele,islocked,createtime,updatetime,directoryid,filename,size,labelnum)
+        VALUES (#{note.userid},#{note.abstractnote},#{note.username},#{note.source},#{note.directory},#{note.isdele},#{note.islocked},#{note.createtime},#{note.updatetime},#{note.directoryid},#{note.filename},#{note.size},#{note.labelnum})
+    </insert>
+
+    <!--修改笔记名-->
+    <update id="changeOneNote">
+        update note set filename=#{filename} where noteid=#{noteid}
+    </update>
+
+    <!--移动到。根据笔记id，修改笔记的文件夹名、文件夹id-->
+    <update id="changeDirectory">
+        update note set directory=#{directory},directoryid=#{directoryid} where noteid=#{noteid}
+    </update>
+
+    <!--删除。只要将isdele设置为yes-->
+    <update id="changeIsDele">
+        update note set isdele=#{isdele} where noteid=#{noteid}
+    </update>
+
+    <!--设置阅读锁。根据noteid将islocked设置为yes-->
+    <update id="changIsLocked">
+        update note set islocked=#{islocked} where noteid=#{noteid}
+    </update>
+
+    <!--设置标签数。根据noteid,修改labelnum-->
+
+    <update id="changLabelnum">
+        update note set labelnum=#{labelnum} where noteid=#{noteid}
+    </update>
+
+    <!--根据文件id得到该文件的信息以及它所有未删除的标签信息-->
+    <select id="getOneNoteWithLabels" resultMap="noteTolabels" parameterType="java.lang.Integer">
+        select noteid, no1.userid,abstractnote,username,directoryid,
+        source,createtime,size,labelnum,
+        directory,updatetime,islocked ,filename,labelname,labelid, labeldele from  note no1 LEFT JOIN lanrelationship lt
+          ON no1.noteid=lt.nid  LEFT JOIN  label la ON lt.lid=la.labelid where no1.noteid=#{noteid};
+    </select>
+
+    <resultMap id="noteTolabels" type="com.Entity.Note">
+        <id property="noteid" column="noteid"/>
+        <result property="userid" column="userid"/>
+        <result property="abstractnote" column="abstractnote"/>
+        <result property="username" column="username"/>
+        <result property="directoryid" column="directoryid"/>
+        <result property="directory" column="directory"/>
+        <result property="createtime" column="createtime"/>
+        <result property="islocked" column="islocked"/>
+        <result property="filename" column="filename"/>
+        <result property="source" column="source"/>
+        <result property="updatetime" column="updatetime"/>
+        <result property="size" column="size"/>
+        <result property="labelnum" column="labelnum"/>
+        <collection property="labels" ofType="com.Entity.Label">
+            <id property="labelid" column="labelid"/>
+            <result property="labelname" column="labelname"/>
+            <result property="labeldele" column="labeldele"/>
+        </collection>
+    </resultMap>
+
+    <!--根据用户id得到该用户的所有文件信息,以及它所关联的图片，取第一张作为样例显示-->
+    <select id="getUserAllNotes" resultMap="notesAndimgs" parameterType="java.lang.String">
+        select no1.noteid, abstractnote,
+        directory,directoryid,updatetime,islocked ,filename,imgid,ingname from note no1 LEFT JOIN img im
+        on no1.noteid=im.noteid  where no1.isdele='no' and no1.userid=#{userid}
+    </select>
+    <resultMap id="notesAndimgs" type="com.Entity.Note">
+        <id property="noteid" column="noteid"/>
+        <result property="abstractnote" column="abstractnote"/>
+        <result property="directory" column="directory"/>
+        <result property="directoryid" column="directoryid"/>
+        <result property="updatetime" column="updatetime"/>
+        <result property="islocked" column="islocked"/>
+        <result property="filename" column="filename"/>
+        <collection property="imgs" ofType="com.Entity.Img">
+            <id property="imgid" column="imgid"/>
+            <result property="ingname" column="ingname"/>
+        </collection>
+    </resultMap>
+
+    <!--通过noteid得到文件名-->
+    <select id="getNoteFilename" resultType="java.lang.String">
+        select filename from note where noteid=#{noteid}
+    </select>
+
+    <!--根据用户id和文件名，确认当前文件名不与其他文件重名-->
+    <select id="checkNoteName" resultType="com.Entity.Note" >
+        select filename, noteid from note where userid=#{userid} and directoryid=#{directoryid} and filename=#{filename}
+    </select>
+
+    <!-- /*修改文件后，改变笔记的修改时间和大小*/-->
+    <update id="updataNoteChange" >
+        UPDATE note SET updatetime=#{note.updatetime}, size=#{note.size}, abstractnote=#{note.abstractnote} where noteid =#{note.noteid}
+    </update>
+
+    <!--插入一张图片-->
+    <insert id="inserOneImg" parameterType="com.Entity.Img">
+        insert into img(imgid,ingname,userid,noteid,imgsize) values(#{img.imgid},#{img.ingname},#{img.userid},#{img.noteid},#{img.imgsize})
+    </insert>
+
+   <!-- &lt;!&ndash;根据用户id和文件id删除该文件关联的所有图|&ndash;&gt;
+    <delete id="deleteAllPics" >
+        delete from img where userid=#{userid} and noteid=#{noteid}
+    </delete>-->
+
+    <!--设置该笔记的所有图片的状态-->
+    <update id="changeNotePicIsDel" >
+        update img set isdelete=#{isdelete} where noteid=#{noteid}
+    </update>
+
+    <!--根据noteid得到该文件的所有图片的id和名字-->
+    <select id="getImgsOfNote"  resultType="com.Entity.Img">
+        select imgid,ingname from img where noteid=#{noteid}
+    </select>
+
+    <!--根据noteid删除表中该文件的所有图片-->
+    <delete id="deleteImgsOfNote" >
+        delete from img where noteid=#{noteid}
+    </delete>
+
+    <!--根据noteid删除该条信息-->
+    <delete id="deletOneNote" >
+        delete from note where noteid =#{noteid}
+    </delete>
+
+    <!--通过userid得到所有不在已经删除的文件夹中的文件-->
+    <select id="getAllDeleteNotesd" resultType="com.Entity.Note" >
+        select noteid,filename from note where userid=#{userid} and isdele='yes' and note.directoryid NOT IN
+        <foreach collection="dirs" item="dir" separator="," open="(" close=")" >
+            #{dir.directoryid}
+        </foreach>
+    </select>
+
+    <!--通过userid得到所有被删除的文件-->
+    <select id="getAllDeleteNotes" resultType="com.Entity.Note" parameterType="java.lang.String">
+        select noteid,filename from note where isdele="yes" and userid=#{userid}
+    </select>
+
+    <!--通过noteid,得到该文件所在的文件夹id-->
+    <select id="getDirOfNote" resultType="java.lang.String">
+        select directoryid from note where noteid=#{noteid}
+    </select>
+
+    <!--通过directoryid，修改文件的删除状态-->
+    <update id="changDeletByDid" >
+        update note set isdele=#{isdele} where directoryid=#{directoryid}
+    </update>
+
+    <!--根据笔记的文件夹id，得到该文件夹下的所有笔记的noteid-->
+    <select id="getNoteidOfDir" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select noteid from note where directoryid=#{directoryid}
+    </select>
+
+    <!--通过directoryid,修改文件是否被锁-->
+    <update id="changeisLockBydid" >
+        update note set islocked=#{islocked} where directoryid=#{directoryid}
+    </update>
+
+    <!--通过directoryid，得到其所有得文件详细信息-->
+    <select id="getNotesOfDir" parameterType="java.lang.String" resultType="com.Entity.Note">
+        select * from note where directoryid=#{directoryid}
+    </select>
+
+
+
+
+</mapper>

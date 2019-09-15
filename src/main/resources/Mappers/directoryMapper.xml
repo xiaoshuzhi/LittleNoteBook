@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.Dao.DirectoryDao">
+    <insert id="insertOneDirectory" parameterType="com.Entity.Directory">
+        insert into directory (directoryid, userid, directory, isddele, isdlocked,defuatForder) VALUES (#{directory.directoryid},#{directory.userid},#{directory.directory},#{directory.isddele},#{directory.isdlocked},#{directory.defuatForder})
+    </insert>
+
+    <update id="changeDirectory">
+        update directory set directory=#{directory} where directoryid=#{directoryid}
+    </update>
+
+    <update id="changeIsdDele">
+        update directory set isddele=#{isddele} where directoryid=#{directoryid}
+    </update>
+
+    <update id="changeIsdLocked">
+        update directory set isdlocked=#{isdlocked} where directoryid=#{directoryid}
+    </update>
+
+    <select id="getDirectory" resultType="java.lang.String" parameterType="java.lang.String">
+        select directory from directory where directoryid=#{directoryid}
+    </select>
+
+    <!--通过userid得到被删除的文件夹id，以及文件夹名-->
+    <select id="getAllDeletesDir" resultType="com.Entity.Directory" parameterType="java.lang.String">
+        select directoryid,directory from directory where userid=#{userid} and isddele='yes'
+    </select>
+
+    <!--通过userid得到所有的文件夹-->
+    <select id="getAllDirs" parameterType="java.lang.String" resultType="com.Entity.Directory">
+        select * from directory where userid=#{userid} and isddele='no'
+    </select>
+
+    <!--通过文件夹名以及用户名，得到文件夹对象-->
+    <select id="checkDir" resultType="com.Entity.Directory">
+        select * from directory where userid=#{userid} and directory=#{directory}
+    </select>
+
+    <!--通过directoryid删除文件夹信息-->
+    <delete id="deletOneDir" parameterType="java.lang.String">
+        delete from directory where directoryid=#{directoryid}
+    </delete>
+
+    <!--通过userid得到给用户的默认文件夹-->
+    <select id="getDefaultForder" parameterType="java.lang.String" resultType="java.lang.String">
+        select directoryid from directory where userid=#{userid} and defuatForder='yes'
+    </select>
+</mapper>

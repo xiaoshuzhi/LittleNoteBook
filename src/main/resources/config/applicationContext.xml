@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.3.xsd
+        http://mybatis.org/schema/mybatis-spring
+        http://mybatis.org/schema/mybatis-spring.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+        <!-- 配置包扫描 服务层-->
+        <context:component-scan base-package="com.ServiceImp,com.Entity"/>
+        <!-- 加载连接数据库参数的配置文件-->
+        <context:property-placeholder location="classpath:Property/db.properties"/>
+        <!-- 配置数据源bean，使用的是dbcp-->
+        <bean name="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+                <property name="driverClassName" value="${jdbc.driverClassName}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+                <property name="maxTotal" value="10"/>
+                <property name="maxIdle" value="5"/>
+        </bean>
+
+        <!--注册SqlSessonFactory 的bean-->
+        <bean name="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+                <property name="dataSource" ref="dataSource"></property>
+                <!--加载Mapper文件-->
+                <property name="mapperLocations">
+                        <list>
+                                <value>classpath:Mappers/userMapper.xml</value>
+                                <value>classpath:Mappers/noteMapper.xml</value>
+                                <value>classpath:Mappers/directoryMapper.xml</value>
+                                <value>classpath:Mappers/labelMapper.xml</value>
+                        </list>
+                </property>
+        </bean>
+
+        <!--注册一个Mapper扫描器-->
+        <!--方式一-->
+        <!--<bean name="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+                <property name="basePackage" value="com.Dao"/>
+                <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        </bean>-->
+
+        <!--方式二-->
+        <mybatis:scan base-package="com.Dao"/>
+
+        <!--注册一个数据库事务管理器.
+        如果你想使用由容器管理的事务，而不想使用 Spring 的事务管理，你就不能配置任何的 Spring 事务管理器。
+        并必须配置 SqlSessionFactoryBean 以使用基本的 MyBatis 的 ManagedTransactionFactory：-->
+
+        <!--<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+                <property name="dataSource" ref="dataSource" />
+                <property name="transactionFactory">
+                        <bean class="org.apache.ibatis.transaction.managed.ManagedTransactionFactory" />
+                </property>
+        </bean>-->
+
+
+        <!--一个使用 MyBatis-Spring 的其中一个主要原因是它允许 MyBatis 参与到 Spring 的事务管理中。
+        而不是给 MyBatis 创建一个新的专用事务管理器,
+        MyBatis-Spring 借助了 Spring 中的 DataSourceTransactionManager 来实现事务管理-->
+
+        <!--设置数据源的事务管理类-->
+        <bean name="databaseTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+                <property name="dataSource" ref="dataSource"/>
+        </bean>
+
+        <!-- 使用注解事务，需要添加Transactional注解属性 -->
+        <tx:annotation-driven transaction-manager="databaseTransactionManager"/>
+</beans>
