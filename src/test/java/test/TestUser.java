@@ -2,17 +2,15 @@ package test;
 
 import com.Dao.NoteUserDao;
 import com.Entity.NoteUser;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.UUID;
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:config/dispatcher-servlet.xml","classpath:config/applicationContext.xml "})
+@ContextConfiguration(locations={"classpath:config/dispatcher-servlet.xml", "classpath:config/spring-applicationContext.xml "})
 public class TestUser {
 
     @Autowired

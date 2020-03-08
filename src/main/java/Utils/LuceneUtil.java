@@ -52,7 +52,7 @@ public class LuceneUtil {
             type.setStored(true);
             Field idField=new Field("noteid", String.valueOf(note.getNoteid()), type);
             document.add(idField);
-            document.add(new StringField("direcotryid",note.getDirectoryid(), Field.Store.YES));
+            document.add(new StoredField("direcotryid",note.getDirectoryId()));
             //获取文件名
             document.add(new TextField("filename",note.getFilename(), Field.Store.YES));
             //文件内容
@@ -84,7 +84,7 @@ public class LuceneUtil {
             type.setStored(true);
             Field idField=new Field("noteid", String.valueOf(note.getNoteid()), type);
             document.add(idField);
-            document.add(new StringField("direcotryid",note.getDirectoryid(), Field.Store.YES));
+            document.add(new StoredField("direcotryid",note.getDirectoryId()));
             //获取文件名
             document.add(new TextField("filename",note.getFilename(), Field.Store.YES));
             //文件内容

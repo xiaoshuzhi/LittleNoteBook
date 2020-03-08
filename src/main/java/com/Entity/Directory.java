@@ -1,27 +1,28 @@
 package com.Entity;
 
 public class Directory {
-    private String directoryid;
+    private Integer id;
+
     private String userid;
-    private String directory;
+
+    private String directoryName;
+
     private String isddele;
+
     private String isdlocked;
-    private String defuatForder;
 
-    public String getDefuatForder() {
-        return defuatForder;
+    private String defuatforder;
+
+    private String createTime;
+
+    private Integer fileNum;
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setDefuatForder(String defuatForder) {
-        this.defuatForder = defuatForder;
-    }
-
-    public String getDirectoryid() {
-        return directoryid;
-    }
-
-    public void setDirectoryid(String directoryid) {
-        this.directoryid = directoryid;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getUserid() {
@@ -29,15 +30,15 @@ public class Directory {
     }
 
     public void setUserid(String userid) {
-        this.userid = userid;
+        this.userid = userid == null ? null : userid.trim();
     }
 
-    public String getDirectory() {
-        return directory;
+    public String getDirectoryName() {
+        return directoryName;
     }
 
-    public void setDirectory(String directory) {
-        this.directory = directory;
+    public void setDirectoryName(String directoryName) {
+        this.directoryName = directoryName == null ? null : directoryName.trim();
     }
 
     public String getIsddele() {
@@ -45,7 +46,7 @@ public class Directory {
     }
 
     public void setIsddele(String isddele) {
-        this.isddele = isddele;
+        this.isddele = isddele == null ? null : isddele.trim();
     }
 
     public String getIsdlocked() {
@@ -53,18 +54,30 @@ public class Directory {
     }
 
     public void setIsdlocked(String isdlocked) {
-        this.isdlocked = isdlocked;
+        this.isdlocked = isdlocked == null ? null : isdlocked.trim();
     }
 
-    @Override
-    public String toString() {
-        return "Directory{" +
-                "directoryid='" + directoryid + '\'' +
-                ", userid='" + userid + '\'' +
-                ", directory='" + directory + '\'' +
-                ", isddele='" + isddele + '\'' +
-                ", isdlocked='" + isdlocked + '\'' +
-                ", defuatForder='" + defuatForder + '\'' +
-                '}';
+    public String getDefuatforder() {
+        return defuatforder;
+    }
+
+    public void setDefuatforder(String defuatforder) {
+        this.defuatforder = defuatforder == null ? null : defuatforder.trim();
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime == null ? null : createTime.trim();
+    }
+
+    public Integer getFileNum() {
+        return fileNum;
+    }
+
+    public void setFileNum(Integer fileNum) {
+        this.fileNum = fileNum;
     }
 }

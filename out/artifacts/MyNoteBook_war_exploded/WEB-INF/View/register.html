@@ -1,0 +1,193 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>SB Admin 2 - Register</title>
+
+    <!-- Custom fonts for this template-->
+    <link th:href="${#request.getContextPath()}+'/css/all.min.css'" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link th:href="${#request.getContextPath()}+'/css/sb-admin-2.css'" rel="stylesheet">
+    <link  charset="utf-8" th:href="${#request.getContextPath()}+'/css/default.css'" rel="stylesheet">
+
+</head>
+
+<body class="bg-gradient-primary">
+
+<div class="container">
+
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+                <div class="col-lg-4 d-none d-lg-block bg-register-image"></div>
+                <div class="col-lg-8">
+                    <div class="p-5">
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+                        </div>
+                        <form class="user" id="rejestForm" action="/rejest">
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0" style="margin-left:165px;">
+                                    <input type="text" class="form-control form-control-user" id="exampleFirstName" name="username" placeholder="username">
+                                </div>
+                                <div class="mb-3 mb-sm-0 " style="width: 150px;">
+                                    <span id="usernameCheck"  class="" style="display: block; margin-top:12px;" name="username"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0" style="margin-left:165px;">
+                                    <input id="myemail" type="email" class="form-control form-control-user" name="email"  placeholder="Email Address">
+                                </div>
+                                <div class="mb-3 mb-sm-0 " style="width: 150px;">
+                                    <span id="emailCheck"  class="" style="display: block; margin-top:12px;" ></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0" style="margin-left:165px;">
+                                    <input type="password" class="form-control form-control-user" id="InputPassword" name="password" placeholder="Password">
+
+                                </div>
+                                <div class=" mb-3 mb-sm-0 " style="width: 150px;">
+                                    <span id="passwordCheck" style="display: block; margin-top:12px;"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0" style="margin-left:165px;">
+                                    <input type="password" class="form-control form-control-user" id="ReInputPassword" placeholder="Repeat-Password">
+
+                                </div>
+                                <div class="mb-3 mb-sm-0 " style="width: 150px;">
+                                    <span id="repasswordCheck" style="display: block; margin-top:12px;"></span>
+                                </div>
+                            </div>
+
+                            <span id="mysubmit" class="col-3 btn btn-primary btn-user btn-block" style="margin-left:235px;">提交</span>
+                        </form>
+                        <hr>
+                        <div class="text-center">
+                            <a class="small" href="login.html">Already have an account? Login!</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script th:src="${#request.getContextPath()}+'/js/jquery.min.js'"></script>
+<script th:src="${#request.getContextPath()}+'/js/bootstrap.bundle.min.js'"></script>
+<!-- Core plugin JavaScript-->
+<script th:src="${#request.getContextPath()}+'/js/jquery.easing.min.js'"></script>
+<script th:src="${#request.getContextPath()}+'/js/jquery-3.4.1.js'"></script>
+
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    var ctxPath = /*[[@{/}]]*/ '';
+    /*]]>*/
+
+    $(function(){
+
+        var emailg="";
+        $("#mysubmit").click(function(){
+            console.log(ctxPath);
+            var emailcheck = new RegExp("^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$", "").test($("#myemail").val());
+            var passwordcheck = new RegExp("^[a-zA-z][a-zA-Z0-9]{6,16}$", "").test($("#InputPassword").val());
+            console.log(passwordcheck);
+
+            var password="";
+            var email="";
+            var username="";
+            var repassword="";
+
+            if($("#exampleFirstName").val()==""){
+                $("#usernameCheck").text("请输入用户名");
+            }else{
+                username="suc";
+                $("#usernameCheck").text("");
+            }
+
+            if($("#myemail").val()==""){
+                $("#emailCheck").text("请输入邮箱");
+            }else if(emailg=="suc"){
+                email="suc";
+                $("#emailCheck").text("");
+            }
+
+            if($("#InputPassword").val()==""){
+                $("#passwordCheck").text("密码不能为空");
+            }else if(!passwordcheck){
+                $("#passwordCheck").text("密码长度过短");
+            }else{
+                password="suc";
+                $("#passwordCheck").text("");
+            }
+
+            console.log($("#InputPassword").val()+" "+$("#ReInputPassword").val());
+
+            if($("#ReInputPassword").val()==""){
+                $("#repasswordCheck").text("输入不能为空");
+            }else if($("#InputPassword").val()!=$("#ReInputPassword").val()){
+                $("#repasswordCheck").text("两次输入不一致");
+            }else{
+                repassword="suc";
+                $("#repasswordCheck").text("");
+            }
+
+            console.log(username +" "+email+" "+password+" "+repassword)
+
+            if(username=="suc"&&email=="suc"&&password=="suc"&&repassword=="suc"){
+                console.log("haha");
+                $.ajax({
+                    type:"post",
+                    url:ctxPath+"rejest",
+                    data:$("#rejestForm").serialize(),
+                    success:function(data){
+                        var json=JSON.parse(data);
+                        if(json.message=="201"){
+                            window.location.href="/login.jsp"
+                        }
+                    }
+                })
+            }
+        })
+
+
+        $("#myemail").blur(function(){
+            var emailcheck = new RegExp("^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$", "").test($("#myemail").val());
+            if($("#myemail").val()!="") {
+                if (emailcheck) {
+                    $.ajax({
+                        type: "post",
+                        url:ctxPath+"checkEmail",
+                        data: {
+                            email: $(this).val()
+                        },
+                        success: function (data) {
+                            var json = JSON.parse(data);
+                            if (json.message =="401") {
+                                $("#emailCheck").text("该邮箱已被注册");
+                            }else if(json.message=="201"){
+                                emailg="suc";
+                                $("#emailCheck").text("");
+                            }
+                        }
+                    })
+                } else {
+                    $("#emailCheck").text("格式错误")
+                }
+            }else{
+                $("#emailCheck").text("请输入邮箱");
+            }
+        })
+    })
+</script>
+
+</body>
+</html>

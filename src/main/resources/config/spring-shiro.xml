@@ -1,0 +1,98 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+    <!-- web.xml中shiro的filter对应的bean -->
+    <!-- Shiro 的Web过滤器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <!-- 缓存管理器 -->
+        <property name="cacheManager" ref="cacheManager"/>
+        <!-- 配置session的管理方式 -->
+        <property name="realm" ref="shiroRealm"/>
+        <!-- 添加了两种验证策略 -->
+        <!-- <property name="realms">
+            <list>
+                <ref bean="shiroRealm"/>
+                <ref bean="secondRealm"/>
+            </list>
+        </property> -->
+    </bean>
+
+    <bean id="multAuthenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
+        <!-- 设置realms的验证策略 -->
+        <property name="authenticationStrategy">
+            <!-- 默认值，有任何一个策略生效，都可以成功 -->
+            <!-- <bean class="org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy" /> -->
+            <!-- 必须满足所有的realms验证才可以成功 -->
+            <bean class="org.apache.shiro.authc.pam.AllSuccessfulStrategy"></bean>
+        </property>
+    </bean>
+
+    <!-- 2.配置缓存管理器，可以设置缓存 -->
+    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>
+    </bean>
+
+    <!-- 4.配置lifecycleBeanPostProcessor,可以自动调用配置在spring中的shrio对象生命周期方法。 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <!-- 5.启用IOC容器中的shiro注解，但必须在配置 lifecycleBeanPostProcessor 后才会生效。-->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          depends-on="lifecycleBeanPostProcessor"/>
+    <!-- 安全管理器 -->
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+    <!-- 添加自定义的Relm规则 -->
+    <bean id="shiroRealm" class="Utils.ShiroRealm">
+        <property name="credentialsMatcher">
+            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+                <property name="hashAlgorithmName" value="MD5"></property>
+                <property name="hashIterations" value="10"></property>
+            </bean>
+        </property>
+    </bean>
+
+    <!-- 3.配置实现了realm接口的bean -->
+    <bean id="secondRealm" class="Utils.ShiroRealm">
+        <!-- 自定义加密算法 -->
+        <property name="credentialsMatcher">
+            <!-- shiro通过HashedCredentialsMatcher完成各种加密算法的封装 -->
+            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+                <!-- 指定使用什么加密算法，md5，sha1 ... -->
+                <property name="hashAlgorithmName" value="sha1" />
+                <!-- 重复加密的次数 -->
+                <property name="hashIterations" value="10" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <!--<property name="loginUrl" value="/user/login"/>-->
+        <!--<property name="successUrl" value="/admin/index"/>-->
+        <!--<property name="unauthorizedUrl" value="/user/unauthorized"/>-->
+        <!--  <property name="filterChainDefinitions">
+             <value>
+                 /user/login = anon
+                 /index.jsp = anon
+                 /admin/**= authc,roles[admin]
+                 /user/unauthorized=roles[user]
+                 /logout= logout
+                 /** = authc
+             </value>
+         </property> -->
+        <!-- 通过工厂进行数据库查询权限 -->
+       <!-- <property name="filterChainDefinitionMap">
+            <ref bean="filterMap"/>
+        </property>-->
+    </bean>
+
+    <!--<bean id="filterChainDefinitionMapFactory" class="com.znsd.shiro.ShiroRealm.FilterChainDefinitionMapFactory"></bean>
+    &lt;!&ndash; 工厂构造器 &ndash;&gt;
+    <bean id="filterMap" factory-bean="filterChainDefinitionMapFactory"
+          factory-method="builderFilterChainDefinition">
+    </bean>-->
+
+</beans>

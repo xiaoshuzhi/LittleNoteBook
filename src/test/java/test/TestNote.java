@@ -3,10 +3,7 @@ package test;
 
 import com.Dao.NoteDao;
 import com.Entity.Directory;
-import com.Entity.Img;
 import com.Entity.Note;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.junit.Test;
@@ -15,15 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:config/dispatcher-servlet.xml","classpath:config/applicationContext.xml "})
+@ContextConfiguration(locations={"classpath:config/dispatcher-servlet.xml", "classpath:config/spring-applicationContext.xml "})
 public class TestNote {
     @Autowired
     private NoteDao noteDao;
@@ -32,19 +27,19 @@ public class TestNote {
         Note note=new Note();
         note.setUserid("305674b0918a44dd9d87f800454363dc");
         note.setAbstractnote("这是一个测试文件摘要");
-        note.setUsername("倾国倾城");
-        note.setSource(null);
-        note.setDirectory("我的文件");
+       // note.setUsername("倾国倾城");
+       // note.setSource(null);
+       // note.setDirectory("我的文件");
         SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String createTime=format.format(new Date());
         note.setCreatetime(createTime);
         note.setUpdatetime(createTime);
-        note.setLabelnum(0);
+       // note.setLabelnum(0);
         note.setIsdele("no");
         note.setIslocked("no");
-        note.setDirectoryid("uuid");
+      //  note.setDirectoryid("uuid");
         note.setFilename("新建文件");
-        note.setSize(0);
+       // note.setSize(0);
         noteDao.insertOneNote(note);
 
     }
@@ -119,7 +114,7 @@ public class TestNote {
         noteDao.inserOneImg(imge);*/
        List<Directory> dirs=new ArrayList<>();
         Directory dir = new Directory();
-        dir.setDirectoryid("directoryuui");
+        // dir.setDirectoryid("directoryuui");
         dirs.add(dir);
         List<Note> notes=noteDao.getAllDeleteNotesd("305674b0918a44dd9d87f880454363dc",dirs);
         for (Note note : notes) {

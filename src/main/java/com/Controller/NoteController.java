@@ -1,30 +1,92 @@
 package com.Controller;
 
 import Utils.MD5;
-import com.Dao.DirectoryDao;
-import com.Dao.NoteDao;
-import com.Dao.NoteUserDao;
+import com.Dao.*;
 import com.Entity.Directory;
 import com.Entity.JsonString;
 import com.Entity.Note;
 import com.Entity.NoteUser;
 import com.Service.NoteService;
+
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
+@CrossOrigin
 public class NoteController {
+
     @Autowired
+    private NoteMapper noteMapper;
+    @Autowired
+    private DirectoryMapper directoryMapper;
+
+    @PutMapping(value="/api/Note")
+    @ResponseBody
+    public Map<String,Object> creatNote(@RequestBody Map<String,Object> paramMap){
+        Map<String, Object> data = new HashMap<>();
+        data.put("code", 20000);
+        data.put("message", "put = create");
+        return data;
+    }
+
+    @PostMapping(value="/api/Note")
+    @ResponseBody
+    public Map<String,Object> uploadNote(@RequestBody Map<String,Object> paramMap){
+        Map<String, Object> data = new HashMap<>();
+        data.put("code", 20000);
+        data.put("message", "post = update");
+        return data;
+    }
+
+//    @RequestMapping("/api/checkNoteName")
+//    @ResponseBody
+//    public Map<String,Object> checkNoteName(@RequestBody Map<String,Object> paramMap){
+//
+//    }
+
+//    @RequestMapping("/api/createNote")
+//    @ResponseBody
+//    public Map<String,Object> createNote(@RequestBody Map<String,Object> paramMap){
+//
+//    }
+
+    @GetMapping("/api/Note/{id}")
+    @ResponseBody
+    public Map<String,Object> openNote(@PathVariable Integer id){
+        Map<String, Object> data = new HashMap<>();
+        data.put("code", 20000);
+        data.put("message", "get = get" + id);
+        return data;
+    }
+
+    @DeleteMapping("/api/Note/{id}")
+    @ResponseBody
+    public Map<String,Object> deleteNote(@PathVariable Integer id){
+        Map<String, Object> data = new HashMap<>();
+        data.put("code", 20000);
+        data.put("message", "get = delete" + id);
+        return data;
+    }
+
+   /* @RequestMapping(value="/search",method=RequestMethod.GET)
+    @ResponseBody
+    public Map<String,Object> search(@RequestBody Map<String,Object> paramMap){
+
+    }*/
+
+
+}
+
+ /*@Autowired
     private NoteService noteService;
 
     @Autowired
@@ -113,7 +175,7 @@ public class NoteController {
     @ResponseBody
 
     public String rejest(NoteUser user,HttpServletRequest request){
-        /*设置用户的基本信息*/
+        *//*设置用户的基本信息*//*
         user.setUse(0);
         user.setLogo("我好像没什么要说的");
         user.setAddress("未知");
@@ -124,7 +186,7 @@ public class NoteController {
         user.setTotal(3);
         user.setUsed(0);;
         user.setPassword(MD5.strToMd5(user.getPassword()));
-        /*设置用户的初始文件夹*/
+        *//*设置用户的初始文件夹*//*
         String rootPath = request.getServletContext().getRealPath("/") + "uploadDirectory/";
         String userid=user.getUserid();
         File userFile=new File(rootPath,userid);
@@ -146,7 +208,7 @@ public class NoteController {
         File notePathFile=new File(notepath);
         notePathFile.mkdirs();
 
-        /*插入数据库*/
+        *//*插入数据库*//*
         Directory directory=new Directory();
         directory.setIsdlocked("no");
         directory.setUserid(userid);
@@ -161,5 +223,4 @@ public class NoteController {
         JSONObject json=new JSONObject();
         json.put("message","201");
         return json.toJSONString();
-    }
-}
+    }*/

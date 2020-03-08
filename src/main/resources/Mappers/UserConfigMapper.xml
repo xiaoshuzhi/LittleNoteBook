@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.Dao.UserConfigMapper" >
+  <resultMap id="BaseResultMap" type="com.Entity.UserConfig" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="max_memery" property="maxMemery" jdbcType="INTEGER" />
+    <result column="max_dir" property="maxDir" jdbcType="INTEGER" />
+    <result column="max_file" property="maxFile" jdbcType="INTEGER" />
+    <result column="max_def_file" property="maxDefFile" jdbcType="INTEGER" />
+    <result column="max_img" property="maxImg" jdbcType="INTEGER" />
+    <result column="export_file" property="exportFile" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, max_memery, max_dir, max_file, max_def_file, max_img, export_file
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.Entity.UserConfigExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user_config
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_config
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user_config
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.Entity.UserConfigExample" >
+    delete from user_config
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.Entity.UserConfig" >
+    insert into user_config (id, max_memery, max_dir, 
+      max_file, max_def_file, max_img, 
+      export_file)
+    values (#{id,jdbcType=INTEGER}, #{maxMemery,jdbcType=INTEGER}, #{maxDir,jdbcType=INTEGER}, 
+      #{maxFile,jdbcType=INTEGER}, #{maxDefFile,jdbcType=INTEGER}, #{maxImg,jdbcType=INTEGER}, 
+      #{exportFile,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.Entity.UserConfig" >
+    insert into user_config
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="maxMemery != null" >
+        max_memery,
+      </if>
+      <if test="maxDir != null" >
+        max_dir,
+      </if>
+      <if test="maxFile != null" >
+        max_file,
+      </if>
+      <if test="maxDefFile != null" >
+        max_def_file,
+      </if>
+      <if test="maxImg != null" >
+        max_img,
+      </if>
+      <if test="exportFile != null" >
+        export_file,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="maxMemery != null" >
+        #{maxMemery,jdbcType=INTEGER},
+      </if>
+      <if test="maxDir != null" >
+        #{maxDir,jdbcType=INTEGER},
+      </if>
+      <if test="maxFile != null" >
+        #{maxFile,jdbcType=INTEGER},
+      </if>
+      <if test="maxDefFile != null" >
+        #{maxDefFile,jdbcType=INTEGER},
+      </if>
+      <if test="maxImg != null" >
+        #{maxImg,jdbcType=INTEGER},
+      </if>
+      <if test="exportFile != null" >
+        #{exportFile,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.Entity.UserConfigExample" resultType="java.lang.Integer" >
+    select count(*) from user_config
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update user_config
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.maxMemery != null" >
+        max_memery = #{record.maxMemery,jdbcType=INTEGER},
+      </if>
+      <if test="record.maxDir != null" >
+        max_dir = #{record.maxDir,jdbcType=INTEGER},
+      </if>
+      <if test="record.maxFile != null" >
+        max_file = #{record.maxFile,jdbcType=INTEGER},
+      </if>
+      <if test="record.maxDefFile != null" >
+        max_def_file = #{record.maxDefFile,jdbcType=INTEGER},
+      </if>
+      <if test="record.maxImg != null" >
+        max_img = #{record.maxImg,jdbcType=INTEGER},
+      </if>
+      <if test="record.exportFile != null" >
+        export_file = #{record.exportFile,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update user_config
+    set id = #{record.id,jdbcType=INTEGER},
+      max_memery = #{record.maxMemery,jdbcType=INTEGER},
+      max_dir = #{record.maxDir,jdbcType=INTEGER},
+      max_file = #{record.maxFile,jdbcType=INTEGER},
+      max_def_file = #{record.maxDefFile,jdbcType=INTEGER},
+      max_img = #{record.maxImg,jdbcType=INTEGER},
+      export_file = #{record.exportFile,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.Entity.UserConfig" >
+    update user_config
+    <set >
+      <if test="maxMemery != null" >
+        max_memery = #{maxMemery,jdbcType=INTEGER},
+      </if>
+      <if test="maxDir != null" >
+        max_dir = #{maxDir,jdbcType=INTEGER},
+      </if>
+      <if test="maxFile != null" >
+        max_file = #{maxFile,jdbcType=INTEGER},
+      </if>
+      <if test="maxDefFile != null" >
+        max_def_file = #{maxDefFile,jdbcType=INTEGER},
+      </if>
+      <if test="maxImg != null" >
+        max_img = #{maxImg,jdbcType=INTEGER},
+      </if>
+      <if test="exportFile != null" >
+        export_file = #{exportFile,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.Entity.UserConfig" >
+    update user_config
+    set max_memery = #{maxMemery,jdbcType=INTEGER},
+      max_dir = #{maxDir,jdbcType=INTEGER},
+      max_file = #{maxFile,jdbcType=INTEGER},
+      max_def_file = #{maxDefFile,jdbcType=INTEGER},
+      max_img = #{maxImg,jdbcType=INTEGER},
+      export_file = #{exportFile,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

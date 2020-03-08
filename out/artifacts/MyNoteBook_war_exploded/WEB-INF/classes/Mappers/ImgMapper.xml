@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.Dao.ImgMapper" >
+  <resultMap id="BaseResultMap" type="com.Entity.Img" >
+    <id column="imgid" property="imgid" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="noteid" property="noteid" jdbcType="INTEGER" />
+    <result column="ingname" property="ingname" jdbcType="VARCHAR" />
+    <result column="imgsize" property="imgsize" jdbcType="DOUBLE" />
+    <result column="isdelete" property="isdelete" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    imgid, userid, noteid, ingname, imgsize, isdelete
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.Entity.ImgExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from img
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from img
+    where imgid = #{imgid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from img
+    where imgid = #{imgid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.Entity.ImgExample" >
+    delete from img
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.Entity.Img" >
+    insert into img (imgid, userid, noteid, 
+      ingname, imgsize, isdelete
+      )
+    values (#{imgid,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{noteid,jdbcType=INTEGER}, 
+      #{ingname,jdbcType=VARCHAR}, #{imgsize,jdbcType=DOUBLE}, #{isdelete,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.Entity.Img" >
+    insert into img
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="imgid != null" >
+        imgid,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="noteid != null" >
+        noteid,
+      </if>
+      <if test="ingname != null" >
+        ingname,
+      </if>
+      <if test="imgsize != null" >
+        imgsize,
+      </if>
+      <if test="isdelete != null" >
+        isdelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="imgid != null" >
+        #{imgid,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="noteid != null" >
+        #{noteid,jdbcType=INTEGER},
+      </if>
+      <if test="ingname != null" >
+        #{ingname,jdbcType=VARCHAR},
+      </if>
+      <if test="imgsize != null" >
+        #{imgsize,jdbcType=DOUBLE},
+      </if>
+      <if test="isdelete != null" >
+        #{isdelete,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.Entity.ImgExample" resultType="java.lang.Integer" >
+    select count(*) from img
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update img
+    <set >
+      <if test="record.imgid != null" >
+        imgid = #{record.imgid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userid != null" >
+        userid = #{record.userid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.noteid != null" >
+        noteid = #{record.noteid,jdbcType=INTEGER},
+      </if>
+      <if test="record.ingname != null" >
+        ingname = #{record.ingname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.imgsize != null" >
+        imgsize = #{record.imgsize,jdbcType=DOUBLE},
+      </if>
+      <if test="record.isdelete != null" >
+        isdelete = #{record.isdelete,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update img
+    set imgid = #{record.imgid,jdbcType=VARCHAR},
+      userid = #{record.userid,jdbcType=VARCHAR},
+      noteid = #{record.noteid,jdbcType=INTEGER},
+      ingname = #{record.ingname,jdbcType=VARCHAR},
+      imgsize = #{record.imgsize,jdbcType=DOUBLE},
+      isdelete = #{record.isdelete,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.Entity.Img" >
+    update img
+    <set >
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="noteid != null" >
+        noteid = #{noteid,jdbcType=INTEGER},
+      </if>
+      <if test="ingname != null" >
+        ingname = #{ingname,jdbcType=VARCHAR},
+      </if>
+      <if test="imgsize != null" >
+        imgsize = #{imgsize,jdbcType=DOUBLE},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where imgid = #{imgid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.Entity.Img" >
+    update img
+    set userid = #{userid,jdbcType=VARCHAR},
+      noteid = #{noteid,jdbcType=INTEGER},
+      ingname = #{ingname,jdbcType=VARCHAR},
+      imgsize = #{imgsize,jdbcType=DOUBLE},
+      isdelete = #{isdelete,jdbcType=VARCHAR}
+    where imgid = #{imgid,jdbcType=VARCHAR}
+  </update>
+</mapper>

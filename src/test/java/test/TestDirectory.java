@@ -8,10 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.text.SimpleDateFormat;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:config/dispatcher-servlet.xml","classpath:config/applicationContext.xml "})
+@ContextConfiguration(locations={"classpath:config/dispatcher-servlet.xml", "classpath:config/spring-applicationContext.xml "})
 public class TestDirectory {
     @Autowired
     private DirectoryDao directoryDao;
@@ -19,9 +17,9 @@ public class TestDirectory {
     @Test
     public void testInsertOneDirectory(){
         Directory directory=new Directory();
-        directory.setDirectoryid("directoryuuid");
+        // directory.setDirectoryid("directoryuuid");
         directory.setUserid("useruuid");
-        directory.setDirectory("测试文件夹");
+        // directory.setDirectory("测试文件夹");
         directory.setIsddele("no");
         directory.setIsdlocked("no");
         boolean rs=directoryDao.insertOneDirectory(directory);

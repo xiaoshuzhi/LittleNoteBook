@@ -9,9 +9,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:config/dispatcher-servlet.xml","classpath:config/applicationContext.xml "})
+@ContextConfiguration(locations={"classpath:config/dispatcher-servlet.xml", "classpath:config/spring-applicationContext.xml "})
 public class TestUserService {
-    @Autowired
+   /* @Autowired
     private UserService userService;
 
     @Test
@@ -25,5 +25,5 @@ public class TestUserService {
     public void testgetUserInfo(){
         NoteUser userinfo=userService.getUserInfo("305674b0918a44dd9d87f880454363dc");
         System.out.println(userinfo);
-    }
+    }*/
 }

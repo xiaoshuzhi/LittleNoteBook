@@ -1,19 +1,13 @@
 package com.Controller;
 
-import Utils.EncodingUtil;
-import Utils.ImgUrl;
-import Utils.LuceneUtil;
-import Utils.StringToNCR;
-import com.Dao.DirectoryDao;
-import com.Dao.LabelDao;
-import com.Dao.NoteDao;
-import com.Dao.NoteUserDao;
+import Utils.*;
+import com.Dao.*;
 import com.Entity.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 import org.json.simple.JSONObject;
-import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -29,9 +23,47 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
+@CrossOrigin
 public class PictrueController {
-
     @Autowired
+    private UserMapper userMapper;
+
+
+    List<String> imgSupportSubfixs = Arrays.asList("jpg", "jpeg", "png", "gif", "bmp", "tiff");
+
+
+
+    @PostMapping(value="/api/header")
+    @ResponseBody
+    public Map<String,Object> uploadHeadImg(@RequestParam("avatar")  MultipartFile fileImg,HttpServletRequest request){
+
+        String headUploadPath = GlobalValue.getUploadDirectory(request)+"/header";
+        String uid = (String) request.getAttribute("uid");
+        String fileName = fileImg.getOriginalFilename();
+        String fileNameSubfix = fileName.substring(fileName.lastIndexOf(".")+1);
+        if(!imgSupportSubfixs.contains(fileNameSubfix)){
+            Result.createResult(20400, "不支持该格式", null);
+        }
+        File dir = new File(headUploadPath);
+        File[] files = dir.listFiles();
+        Arrays.stream(dir.listFiles()).filter(file -> file.getName().substring(0,file.getName().lastIndexOf(".")).contains(uid)).forEach(file -> {file.delete();});
+        String newFilename = uid + new SimpleDateFormat("yyMMDDHHmmss").format(new Date()) + "." + fileNameSubfix;
+        File file = new File(headUploadPath,newFilename);
+        try {
+            file.createNewFile();
+            fileImg.transferTo(file);
+        } catch (IOException e) {
+            return Result.createResult(50400, "图片存储时发生错误，稍后再试", null);
+        }
+        int size = (int)fileImg.getSize()/1000;
+        User user = userMapper.selectByPrimaryKey(uid);
+        user.setUsed(size + user.getUsed());
+        user.setVatar(newFilename);
+        userMapper.updateByPrimaryKeySelective(user);
+        return Result.createResult(20000, "success", null);
+    }
+
+   /* @Autowired
     private NoteDao noteDao;
     @Autowired
     private DirectoryDao directoryDao;
@@ -58,9 +90,9 @@ public class PictrueController {
 //定义允许上传的文件扩展名
         HashMap<String, String> extMap = new HashMap<String, String>();
         extMap.put("image", "gif,jpg,jpeg,png,bmp");
-        /*extMap.put("flash", "swf,flv");
+        *//*extMap.put("flash", "swf,flv");
         extMap.put("media", "swf,flv,mp3,wav,wma,wmv,mid,avi,mpg,asf,rm,rmvb");
-        extMap.put("file", "doc,docx,xls,xlsx,ppt,txt,zip,rar,gz,bz2");*/
+        extMap.put("file", "doc,docx,xls,xlsx,ppt,txt,zip,rar,gz,bz2");*//*
 
 //最大文件大小
         long maxSize = 1000000;
@@ -71,7 +103,7 @@ public class PictrueController {
             return obj.toJSONString();
         }
 //检查目录
-        /*用户目录*/
+        *//*用户目录*//*
         File uploadDir = new File(rootPath+userid);
         if(!uploadDir.isDirectory()){
             uploadDir.mkdir();
@@ -95,23 +127,23 @@ public class PictrueController {
             return obj.toJSONString();
         }
 //创建文件夹
-       /* savePath += dirName + "/";
+       *//* savePath += dirName + "/";
         saveUrl += dirName + "/";
         File saveDirFile = new File(savePath);
         if (!saveDirFile.exists()) {
             saveDirFile.mkdirs();
-        }*/
+        }*//*
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         String ymd = sdf.format(new Date());
-       /* savePath += ymd + "/";
-        saveUrl += ymd + "/";*/
-       /*图片存储目录*/
+       *//* savePath += ymd + "/";
+        saveUrl += ymd + "/";*//*
+       *//*图片存储目录*//*
         File dirFile = new File(savePath);
         if (!dirFile.exists()) {
             dirFile.mkdirs();
         }
 
-        /*FileItemFactory factory = new DiskFileItemFactory();
+        *//*FileItemFactory factory = new DiskFileItemFactory();
         ServletFileUpload upload = new ServletFileUpload(factory);
         upload.setHeaderEncoding("UTF-8");
         List items = null;
@@ -121,10 +153,10 @@ public class PictrueController {
         } catch (FileUploadException e) {
             e.printStackTrace();
         }
-        Iterator itr = items.iterator();*/
-        /*文件大小检查*/
-        /*文件后缀名检查*/
-        /*文件上传，路径返回*/
+        Iterator itr = items.iterator();*//*
+        *//*文件大小检查*//*
+        *//*文件后缀名检查*//*
+        *//*文件上传，路径返回*//*
 
         long mfsize=mfile.getSize();
         if(mfsize>maxSize){
@@ -144,10 +176,10 @@ public class PictrueController {
 
         }
 
-        /*修改成独一无二的文件名*/
+        *//*修改成独一无二的文件名*//*
         SimpleDateFormat format=new SimpleDateFormat("yyyyMMddHHmmss");
         filename=format.format(new Date())+new Random().nextInt(10000)+"."+fileExt;
-        /*图片位置*/
+        *//*图片位置*//*
         File imgfile=new File(savePath,filename);
         if(!imgfile.exists()){
             try {
@@ -162,9 +194,6 @@ public class PictrueController {
 
             }
         }
-
-
-
         obj.put("error", 0);
         obj.put("url", saveUrl+"/"+filename);
         return obj.toJSONString();
@@ -174,7 +203,7 @@ public class PictrueController {
     @RequestMapping(value="/uploadNote",method=RequestMethod.POST)
     @ResponseBody
     public JsonString  uploadNote(Note note,@RequestParam(value = "content",defaultValue ="") String contentk,HttpServletRequest request){
-        /*上传文件三种情况
+        *//*上传文件三种情况
 
                 2.修改已有文件：文件id和文件所在文件夹以及文件名都不为空。
                     1.得到文件id，修改必要信息：如修改时间，文件大小等
@@ -183,7 +212,7 @@ public class PictrueController {
                     对文件进行读写操作
                     数据库修改信息
                 3.文件id，文件夹id，文件内容都为空,表示当前没有打开文件。
-         */
+         *//*
 
         System.out.println("upload175"+note);
         System.out.println(note.getNoteid()==-1&&note.getDirectoryid().equals("no")&&note.getFilename().equals(""));
@@ -193,7 +222,7 @@ public class PictrueController {
             jsonStrin.setMessage("未打开文件，不用上传");
             return jsonStrin;
         }else if(note.getNoteid()!=-1&&!note.getDirectoryid().equals("no")){//修改文件
-            /*1.得到文件id，修改必要信息：如修改时间，文件大小等*/
+            *//*1.得到文件id，修改必要信息：如修改时间，文件大小等*//*
             note.setUpdatetime(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
             note.setSize(contentk.getBytes().length);
 
@@ -203,7 +232,7 @@ public class PictrueController {
             String noteDB=rootPath+userid+"/indexDB";
 
             String returnpath=request.getContextPath()+"/uploadDirectory/"+userid+"/imgs";
-            /*根据文件id修改原文件索引。*/
+            *//*根据文件id修改原文件索引。*//*
             boolean rs=LuceneUtil.updateLuceneIndex(note,contentk,noteDB);
             if(!rs){
                 jsonStrin.setStatuid("4006");
@@ -240,7 +269,7 @@ public class PictrueController {
                 file.mkdirs();
             }
 
-           /* 对文件进行读写操作*/
+           *//* 对文件进行读写操作*//*
             File notefile = new File(notepath,note.getFilename()+".html");
             try {
                 if(!notefile.exists()) {
@@ -280,7 +309,7 @@ public class PictrueController {
 
         System.out.println(note);
 
-        /*数据库修改信息*/
+        *//*数据库修改信息*//*
         noteDao.updataNoteChange(note);
         jsonStrin.setStatuid("2006");
         jsonStrin.setMessage("上传成功");
@@ -290,9 +319,9 @@ public class PictrueController {
     @RequestMapping("/createNote")
     @ResponseBody
     public String createNote(Note note,HttpServletRequest request,String content) throws JsonProcessingException {
-        /*新建笔记，知道userid，directoryid ，filename，设置所有必须的默认信息
+        *//*新建笔记，知道userid，directoryid ，filename，设置所有必须的默认信息
         * 文件内容是空的
-        * 1.创建相应的文件 2.创建索引 3.插入数据库*/
+        * 1.创建相应的文件 2.创建索引 3.插入数据库*//*
 
         System.out.println(note);
         String rootPath = request.getServletContext().getRealPath("/") + "uploadDirectory/";
@@ -377,8 +406,8 @@ public class PictrueController {
     @RequestMapping(value="/openNote",method=RequestMethod.GET)
     @ResponseBody
     public String openNote(HttpServletRequest request,@RequestParam(value = "seachinput",defaultValue = "") String seachinput,@RequestParam("noteid")int noteid,@RequestParam("directoryid")String dirctoryid,@RequestParam("filename") String filename) {
-        /*发送一个noteid,dirctoryid，得到,userid+dirctoryid+noteDao.getOneNoteWithLabels.filename.html
-        * 读取文件内容，转成NRC，返回note:   content:*/
+        *//*发送一个noteid,dirctoryid，得到,userid+dirctoryid+noteDao.getOneNoteWithLabels.filename.html
+        * 读取文件内容，转成NRC，返回note:   content:*//*
 
         System.out.println("openNote:341"+filename);
         Note note=noteDao.getOneNoteWithLabels(noteid);
@@ -427,18 +456,18 @@ public class PictrueController {
 
 
 
-    /*@RequestMapping(value="/deleteOther",method=RequestMethod.POST)
+    *//*@RequestMapping(value="/deleteOther",method=RequestMethod.POST)
     @ResponseBody
 
     public String deleteOther(@RequestParam("noteid") int noteid){
-        *//*1.设置该笔记的isdelet字段 2.根据id删除索引*//*
-    }*/
+        *//**//*1.设置该笔记的isdelet字段 2.根据id删除索引*//**//*
+    }*//*
     @RequestMapping(value="/search",method=RequestMethod.POST)
     @ResponseBody
     public String search(@RequestParam("search") String search,@RequestParam("directoryid")String directoryid, HttpServletRequest request){
-        /*根据输入的内容，查询索引库，*/
-        /*directoryid为我的文件夹
-        时，检索所有*/
+        *//*根据输入的内容，查询索引库，*//*
+        *//*directoryid为我的文件夹
+        时，检索所有*//*
         String rootPath = request.getServletContext().getRealPath("/") + "uploadDirectory/";
         String userid=((NoteUser)request.getSession().getAttribute("userInfo")).getUserid();
         String indexDB=rootPath+userid+"/indexDB";
@@ -450,7 +479,7 @@ public class PictrueController {
 
         }
         List<Note> notes=new ArrayList<>();
-        /*不知道可以优化吗，循环查询*/
+        *//*不知道可以优化吗，循环查询*//*
         System.out.println("search__________________________________");
         for (Integer noteid : ids) {
             notes.add(noteDao.getOneNoteWithLabels(noteid));
@@ -480,9 +509,9 @@ public class PictrueController {
     }
 
 
-    /*删除笔记
+    *//*删除笔记
     * 根据id，设置笔记的i是delete字段为yes，笔记对应的图片的isdelete字段设hi在为“yes”
-    * 将索引库中对应id的索引删除*/
+    * 将索引库中对应id的索引删除*//*
     @RequestMapping(value="/deleteOther",method=RequestMethod.POST)
     @ResponseBody
     public String deleteOther(@RequestParam("noteid") int noteid, HttpServletRequest request){
@@ -491,15 +520,15 @@ public class PictrueController {
         String indexDB=rootPath+userid+"/indexDB";
         boolean rs=noteDao.changeIsDele(noteid,"yes");
         boolean rs1=noteDao.changeNotePicIsDel(noteid,"yes");
-        /*boolean rs2=labelDao.changeLabsOfNote(noteid,"yes");*/
+        *//*boolean rs2=labelDao.changeLabsOfNote(noteid,"yes");*//*
         boolean rs3=labelDao.deleteLabsOfNote(noteid);
-       /* LuceneUtil.testDeleteIndex(noteid,indexDB);//索引可以不删，在查询的时候，将过滤掉已经删除的文件*/
+       *//* LuceneUtil.testDeleteIndex(noteid,indexDB);//索引可以不删，在查询的时候，将过滤掉已经删除的文件*//*
         JSONObject JObject = new JSONObject();
         JObject.put("message","删除成功");
         return JObject.toJSONString();
     }
 
-    /*彻底删除，根据笔记id，删除表中相应的一行，删除索引库中的索引*/
+    *//*彻底删除，根据笔记id，删除表中相应的一行，删除索引库中的索引*//*
     @RequestMapping(value="/deleteReally",method=RequestMethod.POST)
     @ResponseBody
     public String deleteReally(@RequestParam("noteid") int noteid, HttpServletRequest request){
@@ -509,13 +538,13 @@ public class PictrueController {
         String imgpath=rootPath+userid+"/imgs";
         String notepath=rootPath+userid+"/notedirectory/"+noteDao.getDirOfNote(noteid);
 
-        /*1.得到图片名，图片id，删除文件夹中的图片，
+        *//*1.得到图片名，图片id，删除文件夹中的图片，
         * 2.删除图片表中的信息
         * 3.删除对应id的文件，删除表中信息
-        * 4.删除索引库中对应的索引*/
+        * 4.删除索引库中对应的索引*//*
 
 
-         /*删除图片信息*/
+         *//*删除图片信息*//*
         List<Img> imgs=noteDao.getImgsOfNote(noteid);
         noteDao.deleteImgsOfNote(noteid);
         for (Img img : imgs) {
@@ -526,17 +555,17 @@ public class PictrueController {
         }
         JSONObject json=new JSONObject();
 
-        /*删除标签*/
+        *//*删除标签*//*
         labelDao.deleteLabsOfNote(noteid);
-       /* List<Integer> libs=labelDao.getlanLids(noteid);
+       *//* List<Integer> libs=labelDao.getlanLids(noteid);
         if(libs.size()>0){
             labelDao.deleteLabsOfNote(noteid);
             //某个笔记删除了，可能其他笔记还用到了这个标签，所以不能在这里删除标签
-            *//*labelDao.deleteLabs(libs);*//*
-        }*/
+            *//**//*labelDao.deleteLabs(libs);*//**//*
+        }*//*
         labelDao.deleteLabsOfNote(noteid);
 
-        /*删除笔记*/
+        *//*删除笔记*//*
         String filename=noteDao.getNoteFilename(noteid);
         File filenote=new File(notepath,filename+".html");
         if(filenote.exists()){
@@ -544,7 +573,7 @@ public class PictrueController {
         }
         boolean rs=noteDao.deletOneNote(noteid);
 
-        /*删除索引*/
+        *//*删除索引*//*
         boolean rs1=LuceneUtil.testDeleteIndex(noteid,indexDB);
         if(rs&&rs1){
             json.put("message","删除成功");
@@ -559,10 +588,10 @@ public class PictrueController {
     @RequestMapping(value = "/rollback",method=RequestMethod.POST)
     @ResponseBody
     public String rollBack(@RequestParam("noteid") int noteid,HttpServletRequest request){
-        /*恢复文件 。
+        *//*恢复文件 。
     1.根据noteid，修改对应的isdelete字段。
     2.根据noteid，修改img表中该文件对应的所有图片的isdelete属性
-    3.根据noteid，恢复索引,因为之前删除笔记的时候没有真删除索引，所以不用做具体操作*/
+    3.根据noteid，恢复索引,因为之前删除笔记的时候没有真删除索引，所以不用做具体操作*//*
 
         boolean rs= noteDao.changeIsDele(noteid,"no");
         boolean rs1=noteDao.changeNotePicIsDel(noteid,"no");
@@ -579,13 +608,13 @@ public class PictrueController {
 
     }
 
-    /*获得所有被删除的文件或者文件夹*/
+    *//*获得所有被删除的文件或者文件夹*//*
     @RequestMapping(value="/getAllDeletes",method=RequestMethod.POST)
     @ResponseBody
     public String getAllDeletes(HttpServletRequest request){
-        /*首先得到该用户删除的文件夹
+        *//*首先得到该用户删除的文件夹
         * 如果存在删除的文件夹，查询不在被删除的，不在已经删除的文件中的笔记
-        * 否则直接查询被删除的笔记*/
+        * 否则直接查询被删除的笔记*//*
         String userid=((NoteUser)request.getSession().getAttribute("userInfo")).getUserid();
         List<Note> notes=new ArrayList<>();
         List<Directory> dirs=directoryDao.getAllDeletesDir(userid);
@@ -625,8 +654,8 @@ public class PictrueController {
         if(notes.size()>0) {
             note = noteDao.getOneNoteWithLabels(((Note) notes.get(0)).getNoteid());
             System.out.println(note);
-                /*根据相应的笔记信息，获得文件内容，将文件内容转为NRC
-                * */
+                *//*根据相应的笔记信息，获得文件内容，将文件内容转为NRC
+                * *//*
             map.put("note",note);
             String notePath=rootPath+userid+"/notedirectory/"+note.getDirectoryid();
             File notefile=new File(notePath,note.getFilename()+".html");
@@ -854,18 +883,18 @@ public class PictrueController {
     @ResponseBody
 
     public String deleteDReally(@RequestParam("directoryid")String directoryid, HttpServletRequest request){
-        /*具体文件：删除文件，文件夹，索引库索引，删除图片，可以参考删除笔记
+        *//*具体文件：删除文件，文件夹，索引库索引，删除图片，可以参考删除笔记
         表：删除图表中信息，文件夹信息 文件信息，
-        * */
+        * *//*
         String rootPath = request.getServletContext().getRealPath("/") + "uploadDirectory/";
         String userid=((NoteUser)request.getSession().getAttribute("userInfo")).getUserid();
         String indexDB=rootPath+userid+"/indexDB";
         String imgpath=rootPath+userid+"/imgs";
         String notepath=rootPath+userid+"/notedirectory/"+directoryid;
-        /*得到noteid ，从而的删除img，在通过得到的imgid，删除图片
+        *//*得到noteid ，从而的删除img，在通过得到的imgid，删除图片
         根据noteid删除索引
         删除note信息，然后直接删除文件夹夹，
-        * */
+        * *//*
         List<Integer> noteids=noteDao.getNoteidOfDir(directoryid);
         for (Integer noteid : noteids) {
            List<Img> imgs =noteDao.getImgsOfNote(noteid);
@@ -959,6 +988,7 @@ public class PictrueController {
         }
         return json.toJSONString();
     }
+    */
 
 
 }

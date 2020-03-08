@@ -2,26 +2,25 @@ package com.Entity;
 
 public class Img {
     private String imgid;
-    private String ingname;
+
     private String userid;
-    private int noteid;
-    private double imgsize;
+
+    private Integer noteid;
+
+    private String ingname;
+
+    private Double imgsize;
+
     private String isdelete;
+
+    private String imgtype;
 
     public String getImgid() {
         return imgid;
     }
 
     public void setImgid(String imgid) {
-        this.imgid = imgid;
-    }
-
-    public String getIngname() {
-        return ingname;
-    }
-
-    public void setIngname(String ingname) {
-        this.ingname = ingname;
+        this.imgid = imgid == null ? null : imgid.trim();
     }
 
     public String getUserid() {
@@ -29,22 +28,30 @@ public class Img {
     }
 
     public void setUserid(String userid) {
-        this.userid = userid;
+        this.userid = userid == null ? null : userid.trim();
     }
 
-    public int getNoteid() {
+    public Integer getNoteid() {
         return noteid;
     }
 
-    public void setNoteid(int noteid) {
+    public void setNoteid(Integer noteid) {
         this.noteid = noteid;
     }
 
-    public double getImgsize() {
+    public String getIngname() {
+        return ingname;
+    }
+
+    public void setIngname(String ingname) {
+        this.ingname = ingname == null ? null : ingname.trim();
+    }
+
+    public Double getImgsize() {
         return imgsize;
     }
 
-    public void setImgsize(double imgsize) {
+    public void setImgsize(Double imgsize) {
         this.imgsize = imgsize;
     }
 
@@ -53,18 +60,14 @@ public class Img {
     }
 
     public void setIsdelete(String isdelete) {
-        this.isdelete = isdelete;
+        this.isdelete = isdelete == null ? null : isdelete.trim();
     }
 
-    @Override
-    public String toString() {
-        return "Img{" +
-                "imgid='" + imgid + '\'' +
-                ", ingname='" + ingname + '\'' +
-                ", userid='" + userid + '\'' +
-                ", noteid=" + noteid +
-                ", imgsize=" + imgsize +
-                ", isdelete='" + isdelete + '\'' +
-                '}';
+    public String getImgtype() {
+        return imgtype;
+    }
+
+    public void setImgtype(String imgtype) {
+        this.imgtype = imgtype == null ? null : imgtype.trim();
     }
 }

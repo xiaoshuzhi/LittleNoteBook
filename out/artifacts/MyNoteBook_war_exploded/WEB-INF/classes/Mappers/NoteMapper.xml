@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.Dao.NoteMapper" >
+  <resultMap id="BaseResultMap" type="com.Entity.Note" >
+    <id column="noteid" property="noteid" jdbcType="INTEGER" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="directory_id" property="directoryId" jdbcType="INTEGER" />
+    <result column="abstractnote" property="abstractnote" jdbcType="VARCHAR" />
+    <result column="createtime" property="createtime" jdbcType="VARCHAR" />
+    <result column="updatetime" property="updatetime" jdbcType="VARCHAR" />
+    <result column="islocked" property="islocked" jdbcType="VARCHAR" />
+    <result column="isdele" property="isdele" jdbcType="VARCHAR" />
+    <result column="filename" property="filename" jdbcType="VARCHAR" />
+    <result column="size" property="size" jdbcType="REAL" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="content_type" property="contentType" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    noteid, userid, directory_id, abstractnote, createtime, updatetime, islocked, isdele, 
+    filename, size, type, content_type
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.Entity.NoteExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from note
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from note
+    where noteid = #{noteid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from note
+    where noteid = #{noteid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.Entity.NoteExample" >
+    delete from note
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.Entity.Note" >
+    insert into note (noteid, userid, directory_id, 
+      abstractnote, createtime, updatetime, 
+      islocked, isdele, filename, 
+      size, type, content_type
+      )
+    values (#{noteid,jdbcType=INTEGER}, #{userid,jdbcType=VARCHAR}, #{directoryId,jdbcType=INTEGER}, 
+      #{abstractnote,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR}, #{updatetime,jdbcType=VARCHAR}, 
+      #{islocked,jdbcType=VARCHAR}, #{isdele,jdbcType=VARCHAR}, #{filename,jdbcType=VARCHAR}, 
+      #{size,jdbcType=REAL}, #{type,jdbcType=VARCHAR}, #{contentType,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.Entity.Note" >
+    insert into note
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="noteid != null" >
+        noteid,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="directoryId != null" >
+        directory_id,
+      </if>
+      <if test="abstractnote != null" >
+        abstractnote,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="islocked != null" >
+        islocked,
+      </if>
+      <if test="isdele != null" >
+        isdele,
+      </if>
+      <if test="filename != null" >
+        filename,
+      </if>
+      <if test="size != null" >
+        size,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="contentType != null" >
+        content_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="noteid != null" >
+        #{noteid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="directoryId != null" >
+        #{directoryId,jdbcType=INTEGER},
+      </if>
+      <if test="abstractnote != null" >
+        #{abstractnote,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="islocked != null" >
+        #{islocked,jdbcType=VARCHAR},
+      </if>
+      <if test="isdele != null" >
+        #{isdele,jdbcType=VARCHAR},
+      </if>
+      <if test="filename != null" >
+        #{filename,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null" >
+        #{size,jdbcType=REAL},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="contentType != null" >
+        #{contentType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.Entity.NoteExample" resultType="java.lang.Integer" >
+    select count(*) from note
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update note
+    <set >
+      <if test="record.noteid != null" >
+        noteid = #{record.noteid,jdbcType=INTEGER},
+      </if>
+      <if test="record.userid != null" >
+        userid = #{record.userid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.directoryId != null" >
+        directory_id = #{record.directoryId,jdbcType=INTEGER},
+      </if>
+      <if test="record.abstractnote != null" >
+        abstractnote = #{record.abstractnote,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createtime != null" >
+        createtime = #{record.createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updatetime != null" >
+        updatetime = #{record.updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.islocked != null" >
+        islocked = #{record.islocked,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isdele != null" >
+        isdele = #{record.isdele,jdbcType=VARCHAR},
+      </if>
+      <if test="record.filename != null" >
+        filename = #{record.filename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.size != null" >
+        size = #{record.size,jdbcType=REAL},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contentType != null" >
+        content_type = #{record.contentType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update note
+    set noteid = #{record.noteid,jdbcType=INTEGER},
+      userid = #{record.userid,jdbcType=VARCHAR},
+      directory_id = #{record.directoryId,jdbcType=INTEGER},
+      abstractnote = #{record.abstractnote,jdbcType=VARCHAR},
+      createtime = #{record.createtime,jdbcType=VARCHAR},
+      updatetime = #{record.updatetime,jdbcType=VARCHAR},
+      islocked = #{record.islocked,jdbcType=VARCHAR},
+      isdele = #{record.isdele,jdbcType=VARCHAR},
+      filename = #{record.filename,jdbcType=VARCHAR},
+      size = #{record.size,jdbcType=REAL},
+      type = #{record.type,jdbcType=VARCHAR},
+      content_type = #{record.contentType,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.Entity.Note" >
+    update note
+    <set >
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="directoryId != null" >
+        directory_id = #{directoryId,jdbcType=INTEGER},
+      </if>
+      <if test="abstractnote != null" >
+        abstractnote = #{abstractnote,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="islocked != null" >
+        islocked = #{islocked,jdbcType=VARCHAR},
+      </if>
+      <if test="isdele != null" >
+        isdele = #{isdele,jdbcType=VARCHAR},
+      </if>
+      <if test="filename != null" >
+        filename = #{filename,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null" >
+        size = #{size,jdbcType=REAL},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="contentType != null" >
+        content_type = #{contentType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where noteid = #{noteid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.Entity.Note" >
+    update note
+    set userid = #{userid,jdbcType=VARCHAR},
+      directory_id = #{directoryId,jdbcType=INTEGER},
+      abstractnote = #{abstractnote,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=VARCHAR},
+      islocked = #{islocked,jdbcType=VARCHAR},
+      isdele = #{isdele,jdbcType=VARCHAR},
+      filename = #{filename,jdbcType=VARCHAR},
+      size = #{size,jdbcType=REAL},
+      type = #{type,jdbcType=VARCHAR},
+      content_type = #{contentType,jdbcType=VARCHAR}
+    where noteid = #{noteid,jdbcType=INTEGER}
+  </update>
+</mapper>

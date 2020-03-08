@@ -1,46 +1,35 @@
 package com.Entity;
 
-import java.util.List;
-
 public class Note {
-    private int  noteid;
+    private Integer noteid;
+
     private String userid;
+
+    private Integer directoryId;
+
     private String abstractnote;
-    private String username;
-    private String source;
-    private String directory;
+
     private String createtime;
+
     private String updatetime;
+
     private String islocked;
+
     private String isdele;
-    private String directoryid;
-    private float size;
+
     private String filename;
-    private int labelnum;
-    private List<Label> labels;
-    private List<Img> imgs;
 
-    public List<Img> getImgs() {
-        return imgs;
-    }
+    private Float size;
 
-    public void setImgs(List<Img> imgs) {
-        this.imgs = imgs;
-    }
+    private String type;
 
-    public List<Label> getLabels() {
-        return labels;
-    }
+    private String contentType;
 
-    public void setLabels(List<Label> labels) {
-        this.labels = labels;
-    }
-
-    public int getNoteid() {
+    public Integer getNoteid() {
         return noteid;
     }
 
-    public void setNoteid(int noteid) {
+    public void setNoteid(Integer noteid) {
         this.noteid = noteid;
     }
 
@@ -49,7 +38,15 @@ public class Note {
     }
 
     public void setUserid(String userid) {
-        this.userid = userid;
+        this.userid = userid == null ? null : userid.trim();
+    }
+
+    public Integer getDirectoryId() {
+        return directoryId;
+    }
+
+    public void setDirectoryId(Integer directoryId) {
+        this.directoryId = directoryId;
     }
 
     public String getAbstractnote() {
@@ -57,31 +54,7 @@ public class Note {
     }
 
     public void setAbstractnote(String abstractnote) {
-        this.abstractnote = abstractnote;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
-    }
-
-    public String getDirectory() {
-        return directory;
-    }
-
-    public void setDirectory(String directory) {
-        this.directory = directory;
+        this.abstractnote = abstractnote == null ? null : abstractnote.trim();
     }
 
     public String getCreatetime() {
@@ -89,7 +62,7 @@ public class Note {
     }
 
     public void setCreatetime(String createtime) {
-        this.createtime = createtime;
+        this.createtime = createtime == null ? null : createtime.trim();
     }
 
     public String getUpdatetime() {
@@ -97,7 +70,7 @@ public class Note {
     }
 
     public void setUpdatetime(String updatetime) {
-        this.updatetime = updatetime;
+        this.updatetime = updatetime == null ? null : updatetime.trim();
     }
 
     public String getIslocked() {
@@ -105,7 +78,7 @@ public class Note {
     }
 
     public void setIslocked(String islocked) {
-        this.islocked = islocked;
+        this.islocked = islocked == null ? null : islocked.trim();
     }
 
     public String getIsdele() {
@@ -113,23 +86,7 @@ public class Note {
     }
 
     public void setIsdele(String isdele) {
-        this.isdele = isdele;
-    }
-
-    public String getDirectoryid() {
-        return directoryid;
-    }
-
-    public void setDirectoryid(String directoryid) {
-        this.directoryid = directoryid;
-    }
-
-    public float getSize() {
-        return size;
-    }
-
-    public void setSize(float size) {
-        this.size = size;
+        this.isdele = isdele == null ? null : isdele.trim();
     }
 
     public String getFilename() {
@@ -137,38 +94,30 @@ public class Note {
     }
 
     public void setFilename(String filename) {
-        this.filename = filename;
+        this.filename = filename == null ? null : filename.trim();
     }
 
-    public int getLabelnum() {
-        return labelnum;
+    public Float getSize() {
+        return size;
     }
 
-    public void setLabelnum(int labelnum) {
-        this.labelnum = labelnum;
+    public void setSize(Float size) {
+        this.size = size;
     }
 
+    public String getType() {
+        return type;
+    }
 
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
+    }
 
-    @Override
-    public String toString() {
-        return "Note{" +
-                "noteid=" + noteid +
-                ", userid='" + userid + '\'' +
-                ", abstractnote='" + abstractnote + '\'' +
-                ", username='" + username + '\'' +
-                ", source='" + source + '\'' +
-                ", directory='" + directory + '\'' +
-                ", createtime='" + createtime + '\'' +
-                ", updatetime='" + updatetime + '\'' +
-                ", islocked='" + islocked + '\'' +
-                ", isdele='" + isdele + '\'' +
-                ", directoryid='" + directoryid + '\'' +
-                ", size=" + size +
-                ", filename='" + filename + '\'' +
-                ", labelnum=" + labelnum +
-                ", labels=" + labels +
-                ", imgs=" + imgs +
-                '}';
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType == null ? null : contentType.trim();
     }
 }

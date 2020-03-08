@@ -1,0 +1,2111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>SB Admin 2 - Blank</title>
+
+  <link  th:href="@{css/font-awesome.min.css}" rel="stylesheet">
+	<link th:href="@{css/all.min.css}" rel="stylesheet">
+	
+  <link th:href="@{https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i}" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link th:href="@{css/sb-admin-2.css}"  rel="stylesheet">
+  <link  charset="utf-8" th:href="@{css/default.css}" rel="stylesheet">
+  <script charset="utf-8" th:src="@{kindecitor/kindeditor-all-min.js}"></script>
+  <script charset="utf-8" th:src="@{kindecitor/zh-CN.js}"></script>
+  
+
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav  sidebar sidebar-light accordion " id="accordionSidebar">
+
+      <!-- Sidebar - Brand -->
+     <!-- <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <div class="sidebar-brand-icon rotate-n-15">
+          <i class="fas fa-laugh-wink"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">小小个人笔记 <sup>2</sup></div>
+      </a>-->
+
+      <li class=" sidebar-brand mb-lg-5">
+        <div class=""  >
+          <img id="getUserInfo" class="img-profile rounded-circle col-5" data-toggle="modal" data-target="#userInfoModel" src="https://source.unsplash.com/QAB-WJcbgJk/60x60" >
+          <span class="sidebar-brand-text d-block rsmall mt-2">小树枝国度</span>
+        </div>
+      </li>
+      
+
+      
+      <hr class="sidebar-divider my-0">
+      
+      <li class="nav-item my-3">
+      	<div class="dropdown">
+    			<button type="button" class="btn btn-primary " data-toggle="dropdown" style="margin-left:30px ; width:160px; font-size: 13px; border-radius: 15px 15px;">
+      			<i class="fa fa-fw fa-plus-circle"></i>
+      			新建文档 
+    			</button>
+    			<div class="dropdown-menu dropdown-backdrop" style="margin-left:15px;  min-width:130px;">
+      			<span id="createFileBtnm" th:attr="defualtForder=${dForder}" class="dropdown-item text-decoration-none dropdown-item text-gray-700 small" style="cursor: pointer;" data-toggle="modal" data-target="#createFile">
+      				<i class="fa fa-fw fa-pencil-alt" ></i>
+      				新建笔记
+      			</span>
+      			<a class="dropdown-item text-decoration-none dropdown-item text-gray-700 small" href="#">
+      					<i class="fa fa-fw fa-columns"></i>
+      				新建MarkDown
+      			</a>
+      			<span class="dropdown-item text-decoration-none dropdown-item text-gray-700 small" style="cursor: pointer;" data-toggle="modal" data-target="#createFoder">
+      				<i class="fa fa-fw fa-folder"></i>
+      				新建文件夹
+      			</span>
+    			</div>
+  			</div>
+ 			
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item">
+        <span class="nav-link" id="getAllNotes" th:attr="all=${dForder}">
+        	<i class="fas fa-file-alt fa-fw	"></i>
+          <span>最新文档</span>
+        </span>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Heading -->
+
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item clearfix">
+        <span id="myDirectory" class="nav-link"  data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+          <i class="fas fa-bell-o fa-folder-open"></i>
+          <span>我的文件夹</span>
+        </span>
+          <!--<span class="border d-block float-left mt-3 clearfix">
+          	  <span class="dropdown" style="min-width: 130px;">
+        				<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            			<span class="caret "></span></a>
+        				<ul class="dropdown-menu dropdown-menu-left 	" style="min-width:130px;">
+            		<li>
+                	<a href="#" class="text-decoration-none dropdown-item text-gray-700 small">新建文件夹</a></li>
+            		
+        				</ul>
+    					</span>
+    			</span>
+        -->
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white mt-n3  collapse-inner rounded ">
+          	<span id="createFordb" class="collapse-item rsmall  ml-0 pl-0" href="cards.html" data-toggle="modal" data-target="#createFoder" style="cursor:pointer;">
+          		<i class="fa fa-fw fa-plus ml-4"></i>
+          		新建文件夹
+          	</span>
+			  <div id="dirbox">
+			  </div>
+
+          </div>
+        </div>
+      </li>
+
+      <!-- Nav Item - Utilities Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+          <i class="fas fa-fw fa-dot-circle"></i>
+          <span>标签</span>
+        </a>
+        <div id="collapseUtilities" class="collapse " style="margin-top:1px;"	 aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+          <div class="bg-white mt-n3 collapse-inner rounded" style="margin-top:1px;">
+          	<span class="collapse-item rsmall  ml-0 pl-0" href="cards.html" style="cursor: pointer;" data-toggle="modal" data-target="#createLabel">
+          		<i class="fa fa-fw fa-plus ml-4"></i>
+          		新建标签
+          	</span>
+          	
+            <span class="collapse-item rsmall col-9 ml-4">
+            	<span class="col-6 d-inline-block text-center"  style="cursor: pointer;height: 25px;">标签1</span>
+            	<span class="dropdown" style="min-width: 1;">
+        				<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            			<span class="caret ml-2"></span></a>
+        				<ul class="dropdown-menu" style="min-width:130px;">	
+            			<li>
+                		<span href="#" class="text-decoration-none dropdown-item text-gray-700 small" data-toggle="modal" data-target="#renameLabel" style="cursor: pointer;">重命名</span>
+            			</li>
+            			<li>
+                		<a href="#" class="text-decoration-none dropdown-item text-gray-700 small">删除</a>
+            			</li>
+        				</ul>
+    					</span>
+    				</span>
+          </div>
+        </div>
+        
+      </li>
+
+     
+
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
+        <span class="nav-link" id="getAllDeletes" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+          <i class="fas fa-fw  fa-trash"></i>
+          <span>回收站</span>
+        </span>
+        <div id="collapsePages" class="collapse " aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded" id="recycal">
+            
+            <!--<span class="collapse-item rsmall col-9 ml-4">
+            	<span class="col-6 d-inline-block text-center"  style="cursor: pointer;height: 25px;" id="rfilename">
+            		<i class="fa fa-fw fa-file-code"></i> 文件1
+            	</span>
+            	<span class="dropdown" style="min-width:150px;">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            			<span class="caret ml-2"></span>
+					</a>
+					<ul class="dropdown-menu" style="min-width:130px;">
+            			<li>
+                			<span class="text-decoration-none dropdown-item text-gray-700 small" noteid="" onclick="rollback()"><i class="fa fa-fw fa-plus"></i>恢复</span>
+            			</li>
+            			<li>
+                			<span class="text-decoration-none dropdown-item text-gray-700 small" noteid="" onclick="deleteReally()"><i class="fa fa-fw fa-minus"></i>删除</span>
+            			</li>
+					</ul>
+				</span>
+			</span>
+
+			  <span class="collapse-item rsmall col-9 ml-4">
+            	<span id="deleteDir" class="col-6 d-inline-block text-center"  style="cursor: pointer;height: 25px;">
+            		<i class="fa fa-fw fa-folder"></i> 文件夹
+            	</span>
+            	<span class="dropdown" style="min-width:150px;">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+						<span class="caret ml-2"></span>
+					</a>
+					<ul class="dropdown-menu" style="min-width:130px;">
+						<li>
+							<span  class="text-decoration-none dropdown-item text-gray-700 small"><i class="fa fa-fw fa-folder-plus" directoryid="" onclick="rollDBack(this)"></i>恢复</span>
+            			</li>
+            			<li>
+							<span  class="text-decoration-none dropdown-item text-gray-700 small"><i class="fa fa-fw fa-folder-minus" directoryid="" onclick="deleteDReally(this)"></i>删除</span>
+            			</li>
+					</ul>
+				</span>
+			  </span>-->
+          </div>
+        </div>
+      </li>
+
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content ">
+
+        <!-- Topbar -->
+        <nav class="bg-gray-100 col-3 navbar navbar-expand navbar-light bg-white topbar mb-1 static-top d-block float-left border p-0	m-0" style="height: 650px;">
+
+          <!-- Sidebar Toggle (Topbar) -->
+          <!--<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>-->
+          <div class="mt-4">
+          <!-- Topbar Search -->
+          <form class=" col-10 float-left d-sm-inline-block form-inline  navbar-search 	">
+            <div class="input-group">
+              <input id="seachinput" type="text" class="form-control bg-light border-1 small 	bg-gray-200" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+				<input id="seachDid" type="hidden" >
+              <div class="input-group-append 	">
+                <button class="btn btn-primary btn-sm" type="button" id="seache">
+                  <i class="fas fa-search fa-sm"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+          
+          <div class="dropdown float-left ">
+    				<span  class="btn btn-primary p-1 btn-sm " data-toggle="dropdown">
+    					 <i class="fa fa-fw fa-th-list"></i>
+    				</span>
+    				<div class="dropdown-menu dropdown-menu-left" style="width: 40px;min-width: 100px;">
+						<span class="dropdown-item " id="abstrac">摘要</span>
+      					<span class="dropdown-item " id="list">列表</span>
+						<input id="witchdir" value="all" type="hidden"/>
+    				</div>
+  				</div>
+  				
+  				</div>
+
+  				<!--noteShowid=${note.noteid}需要改一下，标识当前被打开的文件，默认是第一个，当第一个删除之后，就为空。-->
+			<div id="ulnotesDiv">
+  				<ul id="ulnotes" th:attr="noteShowid=${note==null}?'-1':${note.noteid} ,imgPath=${imgPath}" class="border-0 list-group d-block float-left pre-scrollable col-12 mt-3  bg-gray-100 ml-0" style="min-height: 650px;">
+					<div th:attr="id='note'+${note.noteid}"  th:each="note:${notes}">
+  					<li  class="list-group-item bg-gray-100 border-0 d-block">
+						<div class="col-12 clearfix ">
+  							<div class="">
+  								<i class="fa fa-fw fa-book ml-lg-n3 ml-1"></i>
+  								<span th:attr="id='notename'+${note.noteid}" class="nomal text-dark ml-1 " th:text="${note.filename}">笔记笔记笔记表</span>
+  									<span class="dropdown " >
+        								<span data-toggle="dropdown" th:attr="data-target='notelist'+${note.noteid}" style="margin-right:10px; float:right; display:block; ; height:23px;width:45px;">
+            								<i class="fa fa-fw fa-align-justify d-block float-right mt-0  " ></i>
+        								</span>
+        								<ul class="dropdown-menu dropdown-menu-left" style="min-width:130px;" th:id="'notelist'+${note.noteid}">
+            							<li>
+                							<button class="text-decoration-none dropdown-item text-gray-700 small" th:attr="Noteid=${note.noteid },DirectoryId=${note.directoryid},islocked=${note.islocked}" onclick="openNote(this)">打开</button></li>
+            							<li >
+                							<button id="myspan" class="text-decoration-none dropdown-item text-gray-700 small" data-toggle="modal" data-target="#renameFile" style="cursor: pointer;" th:attr="Noteid=${note.noteid }, DirectoryId=${note.directoryid}" onclick="setspan(this)">重命名</button></li>
+            							<li>
+                							<a href="#" class="text-decoration-none dropdown-item text-gray-700 small">移动到</a></li>
+            							<li>
+                							<span  class="text-decoration-none dropdown-item text-gray-700 small" th:attr="Noteid=${note.noteid }, DirectoryId=${note.directoryid}" onclick="deletenote(this)">删除</span></li>
+                						<li>
+                							<span  class="text-decoration-none dropdown-item text-gray-700 small" th:attr="Noteid=${note.noteid }, DirectoryId=${note.directoryid}" th:onclick="${note.islocked==null||note.islocked=='no'}?'onelock(this)':'onunlock(this)'"  th:text="${note.islocked==null||note.islocked=='no'}? '添加阅读锁':'取消阅读锁'">添加阅读锁</span></li>
+										</ul>
+    								</span>
+  							</div>
+							<div class="myauto">
+  							<a class=" pt-1 d-block text-decoration-none">
+  								<div class="col-8 float-left" >
+  									<span class="d-block rsmall text-gray-500" style="height:55px;" th:text="${note.abstractnote}">简介，你好这是一个简介,显示笔记哈哈哈哈哈</span>
+  									<span class="pt-1 small col-11" th:text="${note.updatetime}">2019-08-15</span>
+  								</div>
+								<div th:if="${note.imgs!=null&&note.imgs.size()>0&&session.userInfo!=null}">
+  								 	<img th:attr="id='noteimg'+${note.noteid}"  th:src="${#request.getContextPath()}+'/uploadDirectory/'+${session.userInfo.userid}+'/imgs/'+${note.imgs.get(note.imgs.size()-1).ingname}"  class="float-left zfx">
+								</div>
+								<div th:if="${note.imgs==null||note.imgs.size()==0}">
+									<img th:attr="id='noteimg'+${note.noteid}"  th:src="${#request.getContextPath()}+'/img/imgpath.png'"  class="float-left zfx">
+								</div>
+  							</a>
+							</div>
+  						</div>
+  					</li>
+	  				</div>
+  				</ul>
+			</div>
+			<div id="dirlockDiv" hidden>
+				<i  class="mt-4 ml-3 fa fa-fw fa-lock " hidden="hidden"></i>
+				<form>
+					密码<input type="password" id="dirlockinp" />
+					确认密码<input type="password" id="reddirlockinp" />
+					<span onclick="setforderLockBut()">确定</span>
+				</form>
+			</div>
+
+
+			<!--
+			function setdirlock(this1){
+				var islogin=[[${session.userInfo.readlock}]];
+				if(islogin==null){
+					$("#ulnotesDiv").prop("hidden",true);
+					$("#dirlockDiv").prop("hidden",false);
+					$("#dirlockDiv").css("display","block")
+				}else{
+					$.ajax({
+						type:"post",
+						url:"/setDirLock",和之前一样的确认密码方式
+						data:{
+							directoryid:$(this1).attr("directoryid")
+						},
+						success:function(data){
+							var json=JSON.parse(data);
+							if(json.message="201")(
+								if($("#witchdir").val==$(this1).attr("directoryid")){
+									$("#ulnotesDiv").prop("hidden",true);
+									$("#dirgetlockDiv").prop("hidden",false);
+									$("#dirgetlockDiv").css("display","block");
+								}
+							}
+						}
+					})
+				}
+			}
+			function setforderLockBut(){
+				var password=$("#dirlockinp").val();
+				var passwordre=$("#reddirlockinp").val();
+				if(password==""||passwordre==""){
+				    alert("请输入密码");
+				}else if(passwordre!=password){
+				    alert("密码不一致，请重新输入")
+				}else{
+				    $.ajax({
+						type:"post",
+						url:"/setReadPass",
+						data:{
+						    readlock:$("#dirlockinp").val(),
+						},
+						success:function(data){
+						    console.log(data);
+						    var json=JSON.parse(data);
+						    if(json.message!="201") {
+                                alert("设置失败，请稍后重试");
+                            }
+                            $("#editorAllDiv").prop("hidden", false);
+                            $("#setPass").prop("hidden", true);
+                            $("#setPass").css("display","none");
+						}
+					})
+				}
+			}
+			function cancledirlock(this1){
+				$("#ulnotesDiv").prop("hidden",true);
+				$("#dirgetlockDiv").prop("hidden",false);
+				$("#dirgetlockDiv").css("display","block");
+			}
+            -->
+			<div id="dirgetlockDiv" hidden>
+				<i class="mt-4 ml-3 fa fa-fw fa-lock " hidden="hidden"></i>
+				<form>
+					密码<input type="password" id="dirlockinp2" />
+					<input type="hidden" value="" id="forderdid"/>
+					<span onclick="getorunlockford(this)" thetype="getDir">确定</span>
+				</form>
+			</div>
+        </nav>
+
+        <!-- End of Topbar -->
+        
+        <!-- Begin Page Content -->
+        <div class=" position-relative col-9 float-lg-left p-0 m-0 h-100 	bg-white border"  >
+        	<!--<iframe src="" class=" m-0 p-0 border-rad h-100 position-relative col-12 mr-auto ml-auto display-block" frameborder="0" border=”1″ marginwidth=”0″ marginheight=”0″  scrolling="no" allowtransparency="yes"></iframe>--> 
+        	<div id="editorAllDiv">
+			<form class="col-11 d-block float-left p-0 m-0 border-0" id="editorAll" style="">
+        			<!--默认为新建文件夹-->
+				<input value="" name="filename" id="editorfilename" class="col-6 ml-3 border-0 p-0 mt-4 mb-3 " style="outline: none !important; font-size: 25px; "/>
+        			<input  type="hidden" value="-1" name="noteid" id="editornoteid"/> <!--为本用户-->
+        			<input   type="hidden" value="no" name="directoryid" id="editordirectory"/><!--默认为我的文件夹-->
+        			<textarea class="h-75 form-control border-top pl-0 ml-0 " name="contentk" id="contentk"></textarea>
+        	</form>
+			</div>
+
+			<div id="editorPass" hidden="hidden"  class="border">
+			<form class="col-11 d-block float-left p-0 m-0 border-0"  action="/checkReadPass">
+				<!--默认为新建文件夹-->
+				<div class="form-group row "  style=" margin-top: 200px; margin-left:250px;">
+					<div class="col-sm-5 mb-3 mb-sm-0 ">
+						<input value="" type="password" name="readlock" id="editorpassword" class="form-control ml-3 p-0 mt-4 mb-3 " style="font-size: 15px; " placeholder="阅读锁密码"/>
+					</div>
+					<div class="col-sm-2 mb-3 mb-sm-0">
+						<span id="editorPassSure" flag="open" class=" btn btn-primary btn-user btn-block mt-4" >确定</span>
+					</div>
+				</div>
+			</form>
+			</div>
+
+			<div id="setPass" hidden="hidden" style="display: block; " class="border">
+				<form class="col-11 d-block float-left p-0 m-0 border-0 user"  action="/setReadPass">
+					<!--默认为新建文件夹-->
+					<div class="form-group border" style="margin:200px auto;">
+						<div class="col-sm-5 mb-3 mb-sm-0" style="margin:auto;">
+							<input value="" type="password" name="readlock" id="seditorpassword" class="form-control ml-3 p-0 mt-4 mb-3 " style=" font-size: 15px; " placeholder="密码"/>
+						</div>
+						<div class="col-sm-5 mb-3 mb-sm-0" style="margin:auto;">
+							<input value="" type="password" name="readlock" id="seditorpasswordre" class="form-control  ml-3 p-0 mt-4 mb-3 " style=" font-size: 15px; "  placeholder="确认密码"/>
+						</div>
+						<div class="col-sm-2 mb-3 mb-sm-0" style="margin:auto; ">
+							<span id="setReadPassB" class=" btn btn-primary  btn-block">确定</span>
+						</div>
+					</div>
+
+				</form>
+			</div>
+
+        	<div class=" float-left bg-gray-100 col-1" style=" height:750px;">
+        		<div class="list-group" style="margin-top: 88px;">
+					<span id="savabutton" style="cursor: pointer;">
+        				<i class="mt-4 ml-3 fa fa-fw fa-file"></i>
+					</span>
+					<span id="showbutton" style="cursor: pointer;">
+        				<i class="mt-4 ml-3 fa fa-fw fa-hand-o-up"></i>
+					</span>
+					<span id="lockbutton" style="cursor: pointer">
+        				<i class="mt-4 ml-3 fa fa-fw fa-lock"></i>
+					</span>
+        			<i class="mt-4 ml-3 fa fa-fw fa-dot-circle fa-1x dropdown" style="margin-top: 25px;" data-toggle="dropdown" id="dropdownMenu1">
+      				<ul class="dropdown-menu" style="background-color: palegoldenrod !important;" id="dropDownCur">
+          			<li class="dropdown-item"> <a href="#" class="text-decoration-none" id="biao1">标签1</a></li>
+          			<li class="dropdown-item"> <a href="#" class="text-decoration-none">标签1</a></li>
+          			<li class="dropdown-item"> <a href="#" class="text-decoration-none">标签1</a></li>	
+      				</ul>
+      				</i>
+        		</div>
+        	</div>
+        </div>
+        
+       
+   <span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-lock"></span></span>
+
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white border-top">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; Your Website 2019</span>
+          </div>
+        </div>
+      </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+  
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <a class="btn btn-primary" href="login.html">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--新建笔记的模态框-->
+  <div id="createFile" class="modal fade dropdown-backdrop " tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  	<div class="modal-dialog">
+      <div class="modal-content border-0 shadow-sm">
+        <div class="modal-body  p-0 " style="height: 200px; margin-left: -0px;">
+        	<div style="width:40px;height:200px;" class=" float-left"></div>
+        	<div class=" float-left bg-gray-100" style="width:460px; height:200px;">
+        		<div class="clearfix">
+        			<span class="d-block float-left small font-weight-bold ml-2 mt-2 ">新建笔记</span>
+        			<i class="fa fa-fw fa-times d-block float-right mr-2 mt-2" data-dismiss="modal"></i>
+        		</div>
+        		<div class="">
+        			<span id="" class=" d-block ml-5 mt-3 font-weight-bold" Style="font-size:15px;">
+        				小小笔记
+        			</span>
+        			<div class="mt-3 ml-5 clearfix ">
+      					<label class="col-2 d-block  pl-0 ml-0 mt-1  mr-0"  Style="font-size:15px;">文件名</label>
+      					<input type="text" id="create_filename" value="" class="col-7 d-block  form-control mt-3" style="height:30px; border-radius: 5px;"/>
+						<input type="text" id="create_directory" value="" hidden>
+      				</div>
+        			<div class="clearfix">
+                <span class="btn btn-primary rsmall float-right border p-1 mt-2 " style="font-size: 14px;margin-right: 35px;" data-dismiss="modal">取消</span>
+                <span class="btn btn-primary rsmall float-right border p-1 mt-2 " style="font-size: 14px;margin-right: 10px;" id="McreateFileBtn" data-dismiss="modal">确定</span>
+            	</div>
+        		</div>
+        	</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--新建文件夹模态框-->
+  <div id="createFoder" class="modal fade dropdown-backdrop " tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  	<div class="modal-dialog">
+      <div class="modal-content border-0 shadow-sm">
+        <div class="modal-body  p-0 " style="height: 200px; margin-left: -0px;">
+        	<div style="width:40px;height:200px;" class=" float-left"></div>
+        	<div class=" float-left bg-gray-100" style="width:460px; height:200px;">
+        		<div class="clearfix">
+        			<span class="d-block float-left small font-weight-bold ml-2 mt-2 ">新建文件夹</span>
+        			<i class="fa fa-fw fa-times d-block float-right mr-2 mt-2" data-dismiss="modal"></i>
+        		</div>
+        		<div class="">
+        			<span id="ti" class=" d-block ml-5 mt-3 font-weight-bold" Style="font-size:15px;">
+        				小小笔记
+        			</span>
+        			<div class="mt-3 ml-5 clearfix ">
+      					<label class="col-4 d-block  ml-0 mt-1  mr-0 pl-0 "  Style="font-size:15px;">文件夹名</label>
+      					<input id="createForderInp" type="text" name="directory"  value="" class="col-8 d-block  form-control mt-3" style="height:30px; border-radius: 5px;margin-left: 0px;"/>
+       				</div>
+        			<div class="clearfix">
+                <span class="btn btn-primary rsmall float-right border p-1 mt-2 " style="font-size: 14px;margin-right: 35px;" data-dismiss="modal">取消</span>
+                <span class="btn btn-primary rsmall float-right border p-1 mt-2 " style="font-size: 14px;margin-right: 10px;" id="createForder" data-dismiss="modal">确定</span>
+            	</div>
+        		</div>
+        	</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--新建标签-->
+  <div id="createLabel" class="modal fade dropdown-backdrop " tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  	<div class="modal-dialog">
+      <div class="modal-content border-0 shadow-sm">
+        <div class="modal-body  p-0 " style="height: 200px; margin-left: -0px;">
+        	<div style="width:40px;height:200px;" class=" float-left"></div>
+        	<div class=" float-left bg-gray-100" style="width:460px; height:200px;">
+        		<div class="clearfix">
+        			<span class="d-block float-left small font-weight-bold ml-2 mt-2 ">新建标签</span>
+        			<i class="fa fa-fw fa-times d-block float-right mr-2 mt-2" data-dismiss="modal"></i>
+        		</div>
+        		<div class="">
+        			<span id="" class=" d-block ml-5 mt-3 font-weight-bold" Style="font-size:15px;">
+        				小小笔记
+        			</span>
+        			<div class="mt-3 ml-5 clearfix ">
+      					<label class="col-4 d-block  ml-0 mt-1  mr-0 pl-0 "  Style="font-size:15px;">标签名</label>
+      					<input type="text" name="" id="" value="" class="col-8 d-block  form-control mt-3" style="height:30px; border-radius: 5px;margin-left: 0px;"/>
+      				</div>
+        			<div class="clearfix">
+                <span class="btn btn-primary rsmall float-right border p-1 mt-2 " style="font-size: 14px;margin-right: 35px;" data-dismiss="modal">取消</span>
+                <span class="btn btn-primary rsmall float-right border p-1 mt-2 " style="font-size: 14px;margin-right: 10px;">确定</span>
+            	</div>
+        		</div>
+        	</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--文件夹重命名模态框-->
+  <div id="renameFoder" class="modal fade dropdown-backdrop " tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  	<div class="modal-dialog">
+      <div class="modal-content border-0 shadow-sm">
+        <div class="modal-body  p-0 " style="height: 200px; margin-left: -0px;">
+        	<div style="width:40px;height:200px;" class=" float-left"></div>
+        	<div class=" float-left bg-gray-100" style="width:460px; height:200px;">
+        		<div class="clearfix">
+        			<span class="d-block float-left small font-weight-bold ml-2 mt-2 ">重命名文件夹</span>
+        			<i class="fa fa-fw fa-times d-block float-right mr-2 mt-2" data-dismiss="modal"></i>
+        		</div>
+        		<div class="">
+        			<span  class=" d-block ml-5 mt-3 font-weight-bold" Style="font-size:15px;">
+        				小小笔记
+        			</span>
+        			<div class="mt-3 ml-5 clearfix ">
+      					<label class="col-4 d-block  ml-0 mt-1  mr-0 pl-0 "  Style="font-size:15px;">重命名为：</label>
+      					<input id="reForderName" type="text" name=""  value="" class="col-8 d-block  form-control mt-3" style="height:30px; border-radius: 5px;margin-left: 0px;"/>
+						<input id="reForderdid" type="text" name="" value="" hidden/>
+      				</div>
+        			<div class="clearfix">
+                <span class="btn btn-primary rsmall float-right border p-1 mt-2 " style="font-size: 14px;margin-right: 35px;" data-dismiss="modal">取消</span>
+                <span class="btn btn-primary rsmall float-right border p-1 mt-2 " style="font-size: 14px;margin-right: 10px;" data-dismiss="modal" id="renameForderBtn">确定</span>
+            	</div>
+        		</div>
+        	</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--标签重命名-->
+  <div id="renameLabel" class="modal fade dropdown-backdrop " tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  	<div class="modal-dialog">
+      <div class="modal-content border-0 shadow-sm">
+        <div class="modal-body  p-0 " style="height: 200px; margin-left: -0px;">
+        	<div style="width:40px;height:200px;" class=" float-left"></div>
+        	<div class=" float-left bg-gray-100" style="width:460px; height:200px;">
+        		<div class="clearfix">
+        			<span class="d-block float-left small font-weight-bold ml-2 mt-2 ">重命名标签</span>
+        			<i class="fa fa-fw fa-times d-block float-right mr-2 mt-2" data-dismiss="modal"></i>
+        		</div>
+        		<div class="">
+        			<span  class=" d-block ml-5 mt-3 font-weight-bold" Style="font-size:15px;">
+        				小小笔记
+        			</span>
+        			<div class="mt-3 ml-5 clearfix ">
+      					<label class="col-4 d-block  ml-0 mt-1  mr-0 pl-0 "  Style="font-size:15px;">重命名为：</label>
+      					<input type="text" name=""  value="" class="col-8 d-block  form-control mt-3" style="height:30px; border-radius: 5px;margin-left: 0px;"/>
+      				</div>
+        			<div class="clearfix">
+                <span class="btn btn-primary rsmall float-right border p-1 mt-2 " style="font-size: 14px;margin-right: 35px;" data-dismiss="modal">取消</span>
+                <span class="btn btn-primary rsmall float-right border p-1 mt-2 " style="font-size: 14px;margin-right: 10px;" id="">确定</span>
+            	</div>
+        		</div>
+        	</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--文件重命名-->
+  <div id="renameFile" class="modal fade dropdown-backdrop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  	<div class="modal-dialog">
+      <div class="modal-content border-0 shadow-sm">
+        <div class="modal-body  p-0 " style="height: 200px; margin-left: -0px;">
+        	<div style="width:40px;height:200px;" class=" float-left"></div>
+        	<div class=" float-left bg-gray-100" style="width:460px; height:200px;">
+        		<div class="clearfix">
+        			<span class="d-block float-left small font-weight-bold ml-2 mt-2 ">重命名笔记</span>
+        			<i class="fa fa-fw fa-times d-block float-right mr-2 mt-2" data-dismiss="modal"></i>
+        		</div>
+        		<div class="">
+        			<span  class=" d-block ml-5 mt-3 font-weight-bold" Style="font-size:15px;">
+        				小小笔记
+        			</span>
+        			<div class="mt-3 ml-5 clearfix ">
+      					<label class="col-4 d-block  ml-0 mt-1  mr-0 pl-0 "  Style="font-size:15px;">重命名为：<span class="" id="reanameFileErro"></span></label>
+						<form action="/renameNote" id="renameNoteForm" >
+							<input hidden type="text" name="noteid" id="reanameNoteId">
+							<input hidden type="text" name="directoryid" id="reanameDirectoryId">
+      						<input id="renameNoteName"  type="text" name="filename"  value="" class="col-8 d-block  form-control mt-3" style="height:30px; border-radius: 5px;margin-left: 0px;"/>
+						</form>
+      				</div>
+        			<div class="clearfix">
+                <span class="btn btn-primary rsmall float-right border p-1 mt-2 " style="font-size: 14px;margin-right: 35px;" data-dismiss="modal">取消</span>
+                <button class="btn btn-primary rsmall float-right border p-1 mt-2 " style="font-size: 14px;margin-right: 10px;" id="renameNoteBut" data-dismiss="modal">确定</button>
+            	</div>
+        		</div>
+        	</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--用户信息模态框-->
+        <div class="modal fade dropdown-backdrop "   id="userInfoModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    		<div class="modal-dialog " >
+        	<div class="modal-content border-0 shadow-sm">
+            <div class="modal-body  p-0 " style="height: 450px; margin-left: -13px;">
+            	<div class="col-12 ">
+            		<div class=" float-left mr-0 "  style="width:50px; height: 450px;">
+            			<!--<ul class="nav navbar-nav">
+										<li class="nav-item mt-3 ml-3 "><a href="#" class="text-decoration-none">iOS</a></li>
+										<li class="nav-item mt-3" ><a href="#" class="text-decoration-none">SVN</a></li>
+										<li class=" nav-item mt-3"><a href="#">iOS</a></li>
+										<li class="nav-item mt-3"><a href="#">SVN</a></li>
+										<li class=" nav-item"><a href="#">iOS</a></li>
+									</ul>-->
+            		</div>	
+            		<div class=" float-left bg-gray-100  mr-n4" style="width:448px; height: 450px;">
+            			<i class="fa fa-fw fa-times  mt-2" style="margin-left: 390px;" data-dismiss="modal"></i>
+            			<div class="col-12 clearfix  mt-1 p-2" style="width:390px; height: 60px;margin-left: 14px;">
+            				<div class=" float-left mt-n2 h-90" style="width:160px; ">
+								<img class="img-profile rounded-circle col-5" src="https://source.unsplash.com/QAB-WJcbgJk/60x60" id="clickimg">
+          						<span class="sidebar-brand-text rsmall mt-2">小树枝国度</span>
+								<form id="upheadImg_form" action="/upheadimg" method="post" hidden enctype="multipart/form-data">
+									<input type="file" name="headimg" id="upheadImg" hidden />
+								</form>
+          					</div>
+          					<div class="float-right ">
+          						<div>
+          							<button class="col-8 p-1 rsmall btn-block btn-primary " style="border-radius: 15px; margin-left: 40px; outline: none;">试用会员</button >
+          						</div>
+          					</div>
+            			</div>
+            			<div class="ml-3">
+            				<a class="text-gray-500  " href="#" style="font-size:10px; margin-left: 10px;">开通会员独享超大空间</a>
+            				<div  class="progress-bar progress-sm mt-2 col-11" aria-valuemin="0" role="progressbar" aria-valuemax="100" aria-valuenow="72" style="border-radius: 4px; margin-left: 10px;"></div>
+       
+            				<div class="col-12 border mt-4 bg-white 	" style="width: 375px; height:240px;margin-left: 18px;">
+      								<form id="UserInfo_form" action="/changUserInfo" method="post" class="form-group">
+      									<div class="mt-3 clearfix ">
+      										<label class="col-2 d-block float-left ml-2 mt-2 rsmall mr-0" >昵称</label>
+      										<input type="text" name="username" id="UserInfo_username" class="border-0 col-6 d-block float-left " style="height:30px;outline: none!important; margin-top: 2px;"/>
+      									</div>
+      									<div class="mt-1 clearfix">
+      										<label class="col-2 d-block float-left ml-2 mt-2 rsmall mr-0" >账号</label>
+      										<input type="text" name="email" id="UserInfo_email" class="col-8 d-block float-left border-0 " style="height:30px;outline: none!important;margin-top: 2px;"/>
+      									</div>
+      									<div class=" clearfix ">
+      										<label class="col-2 d-block float-left ml-2 mt-2 rsmall mr-0" >性别</label>
+      										<input type="radio" name="gender" id="UserInfo_boy"  value="1" class="ml-2" style="margin-top: 10px;"/><span class="small" >男</span>
+      										<input type="radio" name="gender" id="UserInfo_girl" value="0"  class="ml-2" style="margin-top: 10px;"/><span class="small" >女</span>
+      									</div>
+      									
+      									<div class="mt-1 clearfix ">
+      										<label class="col-2 d-block float-left ml-2 mt-2 rsmall mr-0" >地址</label>
+      										<input type="text" name="address"  id="UserInfo_address" class="col-6 d-block float-left border-0 " style="height:30px;outline: none!important;margin-top: 2px;"/>
+      									</div>
+      									<div class="mt-1 clearfix">
+      										<label class="col-2 d-block float-left ml-2 mt-2 rsmall mr-0" >签名</label>
+      										<textarea type="text" name="logo" id="UserInfo_logo"  class="col-8 d-block float-left border" rows="4" cols="10" style="height:60px;outline: none!important;margin-top: 2px;"></textarea>
+      									</div>
+      								</form>
+            				</div>
+            			</div>
+            			<div class="clearfix">
+                			<span class="btn btn-primary rsmall float-right border p-1 mt-2 " style="font-size: 14px;margin-right: 35px;" data-dismiss="modal" id="UserInfo_changeUI">提交更改</span>
+            			</div>
+            		</div>
+            	</div>
+            </div>
+            
+        	</div><!-- /.modal-content -->
+    		</div><!-- /.modal -->
+			</div>
+
+
+  <!-- Bootstrap core JavaScript-->
+  <script th:src="@{js/jquery.min.js}"></script>
+  <script th:src="@{js/bootstrap.bundle.min.js}"></script>
+  <!-- Core plugin JavaScript-->
+  <script th:src="@{js/jquery.easing.min.js}"></script>
+  <script th:src="@{js/jquery-3.4.1.js}"></script>
+  <script type="text/javascript" th:inline="javascript">
+      /*<![CDATA[*/
+      var ctxPath = [[${#request.getContextPath()}]]+"/";
+      /*]]>*/
+  		var editor;
+        KindEditor.ready(function(K) {
+            editor = K.create('#contentk', {
+                width: '776px',
+                height: '650px',
+                allowPreviewEmoticons: true,
+                filePostName: "uploadFile",
+    <!--这里就是指定文件上传的请求地址，上面也已经说了，upload_json.jsp就相当去一个servlet去进行保存文件，这个地方很重要-->
+                uploadJson:ctxPath+'uploadImg',
+                resizeType:'0',
+                allowImageUpload: true,
+                items: [
+                    'formatblock', 'fontname', 'fontsize', 'forecolor', 'hilitecolor', 'bold',
+                    'italic', 'underline', 'strikethrough', 'lineheight', 
+          					'justifyleft', 'justifycenter', 'justifyright',
+                    'justifyfull','fullscreen','insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 
+                   
+                    'removeformat',  'image', 
+                    'table', 'hr', 'emoticons',  
+                    '|', 'copy', 'paste', 'about',
+                    'undo', 'redo', 
+                ]
+            });
+        });
+
+        var noteid1;
+        var directory1;
+        var filename1;
+        var noteidUnlock;
+
+        /*文件重命名设置id*/
+       function setspan(this1){
+           console.log("haha");
+
+           console.log(this1.getAttribute("NoteId"));
+           console.log(this1.getAttribute("DirectoryId"));
+           document.getElementById("reanameNoteId").value=this1.getAttribute("NoteId");
+           document.getElementById("reanameDirectoryId").value=this1.getAttribute("DirectoryId")
+           console.log(document.getElementById("reanameNoteId").value);
+           console.log(document.getElementById("reanameDirectoryId").value);
+	   }
+
+
+        function openNote(this1){
+           /*1.将如果当前打开了文件，将文件上传
+             	2.将noteid和directoryid,文件名传给控制器，
+             	3.根据返回的note信息以及content，设置富文本表单
+             	4.设置当前打开文件id。
+           * */
+           	console.log("hahah ");
+            var noteid = $(this1).attr("Noteid");
+            var directory = $(this1).attr("DirectoryId");
+            var upnoteid=$("#editornoteid").val();
+
+
+            if($("#editornoteid").val()!="-1"){
+                $.ajax({//不管怎么样，打开其他文件就先将打开的文件保存。
+                    type: "post",
+                    url: ctxPath+"uploadNote",
+                    data: {
+                        noteid: $("#editornoteid").val(),
+                        directoryid: $("#editordirectory").val(),
+                        filename: $("#editorfilename").val(),
+                        content: editor.html()
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        var json = JSON.parse(data);
+                        if (json.statuid == "2006") {
+                            console.log("upload success");
+                            if (json.url != "") {
+                                $("#noteimg" +upnoteid).attr("src", json.url);
+                            } else if (json.url == "" || json.url == null) {
+                                $("#noteimg" + upnoteid).attr("src", ctxPath+"img/imgpath.png");
+                            }
+                            /*console.log(noteid);
+                            $.ajax({//根据noteid判断当前文件是否被锁
+                                type:"post",
+                                url:"/checkIsDelete",
+                                data:{
+                                    noteid:noteid
+                                },
+                                success:function(data){
+                                    console.log(data);
+                                    var json1=JSON.parse(data);
+                                    if(json1.message=="yes"){//如果被锁住，显示密码输入界面
+                                        $("#editorPass").prop("hidden",false);
+                                        $("#editorPass").css("display","block")
+                                        $("#editorAllDiv").attr("hidden","hidden");
+
+                                        noteid1 = $(this1).attr("Noteid");//将当前文件信息设置到全局变量中，在密码输入正确时，将这些信息传到后台。
+                                        directory1 = $(this1).attr("DirectoryId");
+                                        filename1 = $("#notename" + noteid).text();
+                                    }else{//没被锁，直接得到发送请求得到文件内容及其信息。
+                                        var noteid = $(this1).attr("Noteid");
+                                        var directory = $(this1).attr("DirectoryId");
+                                        var filename = $("#notename" + noteid).text();
+
+                                        console.log(filename);
+                                        $.ajax({
+                                            type: "get",
+                                            url: "/openNote",
+                                            data: {
+                                                seachinput: $("#seachinput").val(),
+                                                //根据查询框里面是否有值，判断当前是否是在查询条件下打开文件
+                                                //是的话，就需要高亮显示查询字段。
+                                                noteid: noteid,
+                                                directoryid: directory,
+                                                filename: filename
+                                            },
+                                            success: function (data) {//设置显示。
+
+                                                var json = JSON.parse(data);
+                                                if(json.message=="201") {
+                                                    $("#editornoteid").val($(this1).attr("Noteid"));
+                                                    $("#editordirectory").val($(this1).attr("DirectoryId"));
+                                                    $("#editorfilename").val($("#notename" + noteid).text());
+                                                    editor.html(json.content);
+                                                    $("#ulnotes").attr("noteShowid", $(this1).attr("Noteid"));
+                                                }
+                                            }
+                                        })
+                                    }
+                                }
+                            })*/
+                        }
+                    }
+                })
+            }
+
+			console.log(noteid);
+            $.ajax({//根据noteid判断当前文件是否被锁
+                type:"post",
+                url:ctxPath+"checkIsLock",
+                data:{
+					noteid:noteid
+                },
+                success:function(data){
+                    console.log(data);
+                    var json1=JSON.parse(data);
+                    if(json1.message=="yes"){//如果被锁住，显示密码输入界面
+                        $("#editorPass").prop("hidden",false);
+                        $("#editorPass").css("display","block")
+                        $("#editorAllDiv").attr("hidden","hidden");
+
+                        noteid1 = $(this1).attr("Noteid");//将当前文件信息设置到全局变量中，在密码输入正确时，将这些信息传到后台。
+                        directory1 = $(this1).attr("DirectoryId");
+                        filename1 = $("#notename" + noteid).text();
+                    }else{//没被锁，直接得到发送请求得到文件内容及其信息。
+						var noteid = $(this1).attr("Noteid");
+						var directory = $(this1).attr("DirectoryId");
+						var filename = $("#notename" + noteid).text();
+
+						console.log(filename);
+						$.ajax({
+							type: "get",
+							url: ctxPath+"openNote",
+							data: {
+								seachinput: $("#seachinput").val(),
+								//根据查询框里面是否有值，判断当前是否是在查询条件下打开文件
+								//是的话，就需要高亮显示查询字段。
+								noteid: noteid,
+								directoryid: directory,
+								filename: filename
+							},
+							success: function (data) {//设置显示。
+
+								var json = JSON.parse(data);
+								if(json.message=="201") {
+                                    $("#editornoteid").val($(this1).attr("Noteid"));
+                                    $("#editordirectory").val($(this1).attr("DirectoryId"));
+                                    $("#editorfilename").val($("#notename" + noteid).text());
+                                    editor.html(json.content);
+                                    $("#ulnotes").attr("noteShowid", $(this1).attr("Noteid"));
+                                }
+							}
+						})
+                    }
+                }
+            })
+		}
+
+
+
+       function deletenote(this1) {
+           var noteid = $(this1).attr("NoteId");
+           $("#note" + noteid).empty();
+           if (noteid == $("#ulnotes").attr("noteShowid")) {
+               /*首先将文件上传到文件夹，修改索引，如果以后回复文件的话，索引也要恢复*/
+               $.ajax({
+                   type: "post",
+                   url: ctxPath+"uploadNote",
+                   data: {
+                       noteid: $("#editornoteid").val(),
+                       directoryid: $("#editordirectory").val(),
+                       filename: $("#editorfilename").val(),
+                       content: editor.html()
+                   },
+                   success: function (data) {
+
+
+                       $("#editornoteid").val("-1");
+                       $("#editordirectory").val("no");
+                       $("#editorfilename").val("");
+                       editor.html("");
+
+                       $.ajax({
+                           type: "post",
+                           url: ctxPath+"deleteOther",
+                           data: {
+                               noteid: noteid
+                           },
+                           success: function (data1) {
+                               console.log(data1);
+                           }
+                       })
+                   }
+               });
+           } else{
+               $.ajax({
+                   type: "post",
+                   url: ctxPath+"deleteOther",
+                   data: {
+                       noteid: noteid
+                   },
+                   success: function (data1) {
+                       console.log(data1);
+                   }
+               })
+		   }
+		}
+
+		function rollback(this1){
+            var noteid =$(this1).attr("noteid");
+            console.log(noteid);
+            $.ajax({
+				type:"post",
+				url:ctxPath+"rollback",
+				data:{
+				    noteid:noteid
+				},
+				success:function(data){
+				    console.log(data);
+				    $("#rnote"+noteid).empty();
+				}
+			})
+		}
+
+		function deleteReally(this1){
+            var noteid =$(this1).attr("noteid");
+            console.log(noteid);
+            $.ajax({
+                type:"post",
+                url:ctxPath+"deleteReally",
+                data:{
+                    noteid:noteid
+                },
+                success:function(data){
+                    console.log(data);
+                    $("#rnote"+noteid).empty();
+                }
+            })
+		}
+
+       function newNoteInD(this1){
+		   var dirid=$(this1).attr("did");
+		   console.log(dirid);
+		   $("#create_directory").val(dirid);
+	   }
+
+	   function renameForder(this1){
+           $("#reForderdid").val($(this1).attr("did"));
+		}
+
+		function deleteForder(this1){
+	       var did=$(this1).attr("did");
+	       console.log(did);
+	       $.ajax({
+               type: "post",
+               url: ctxPath+"deletForder",
+               data: {
+                   directoryid: did
+               },
+               success: function (data) {
+                   var json = JSON.parse(data);
+                   console.log(data);
+                   $("#dir"+did).empty();
+               }
+		   })
+		}
+
+		function rollDBack(this1){
+		    var did=$(this1).attr("directoryid");
+		    console.log(did);
+		    $.ajax({
+				type:"post",
+				url:ctxPath+"rollDBack",
+				data:{
+                    directoryid:did
+				},
+				success:function(data){
+				    console.log(data);
+                    $("#dir"+did).empty();
+				}
+			})
+		}
+
+		function deleteDReally(this1){
+            var did=$(this1).attr("directoryid");
+            console.log(did);
+            $.ajax({
+                type:"post",
+                url:ctxPath+"deleteDReally",
+                data:{
+                    directoryid:did
+                },
+                success:function(data){
+                    console.log(data);
+                    $("#dir"+did).empty();
+                }
+            })
+		}
+
+
+		function onelock(this1){
+		    var readlock;
+		    $.ajax({
+				type:"post",
+				url:ctxPath+"getReadLock",
+				success:function(data){
+				    var json1=JSON.parse(data);
+
+            		if(json1.message=="401"){ /* 获取是否有设置阅读锁*/
+                		/*将设置密码界面显示出来*/
+						$("#editorAllDiv").prop("hidden",true);
+						$("#setPass").prop("hidden",false);
+						$("#setPass").css("display","block");
+					}else if(json1.message=="201"){
+                        /*直接发请求，将笔记的id传过去，*/
+                        $.ajax({
+                            type: "post",
+                            url: ctxPath+"lock",
+                            data: {
+                                noteid: $(this1).attr("Noteid")
+                            },
+                            success: function (data) {
+                                var json = JSON.parse(data);
+                                if (json.message = 201) {
+                                    if ($("#ulnotes").attr("noteShowid") == $(this1).attr("Noteid")) {
+                                        $("#editorAllDiv").prop("hidden", true);
+                                        $("#editorPass").prop("hidden", false);
+                                        $("#editorPass").css("display", "block");
+                                    }
+                                    $(this1).attr("onclick", "onunlock(this)")
+                                    $(this1).text("取消阅读锁");
+
+                                } else {
+                                    alert("设置出错，稍后再试");
+                                }
+                            }
+                        })
+                    }
+                }
+            })
+		}
+
+		function onunlock(this1){
+		    console.log("hah");
+		    noteidUnlock=$(this1).attr("Noteid");
+		    if($(this1).attr("Noteid")==$("#ulnotes").attr("noteShowid")) {
+
+                $("#editorAllDiv").prop("hidden", true);
+                $("#editorPass").prop("hidden", false);
+                $("#editorPass").css("display", "block");
+                $("#editorPassSure").attr("flag", "unlock");
+            }
+            $(this1).attr("onclick","onelock(this)");
+			$(this1).text("添加阅读锁");
+		}
+
+		function setForderLock(this1){
+		    $("#ulnotesDiv").prop("hidden",true);
+		    $("#imglock").prop("hidden",false);
+		    $("#imglock").css("display","block");
+		}
+
+
+       /* function setdirlock(this1){
+            var islogin=[[${session.userInfo.readlock}]];
+            if(islogin==null){
+                $("#ulnotesDiv").prop("hidden",true);
+                $("#dirlockDiv").prop("hidden",false);
+                $("#dirlockDiv").css("display","block")
+            }else{
+                $.ajax({
+                    type:"post",
+                    url:"/setDirLock",/!*和之前一样的确认密码方式*!/
+                    data:{
+                    	directoryid:$(this1).attr("did")
+                	},
+                	success:function(data){
+                    var json=JSON.parse(data);
+                    if(json.message="201"){
+                    	if($("#witchdir").val==$(this1).attr("directoryid")){
+                        	$("#ulnotesDiv").prop("hidden",true);
+                        	$("#dirgetlockDiv").prop("hidden",false);
+                        	$("#dirgetlockDiv").css("display","block");
+                    	}
+                    }
+            		}
+            	})
+        	}
+        }
+        function setforderLockBut(){
+            var password=$("#dirlockinp").val();
+            var passwordre=$("#reddirlockinp").val();
+            if(password==""||passwordre==""){
+                alert("请输入密码");
+            }else if(passwordre!=password){
+                alert("密码不一致，请重新输入")
+            }else{
+                $.ajax({
+                    type:"post",
+                    url:"/setReadPass",
+                    data:{
+                        readlock:$("#dirlockinp").val(),
+                    },
+                    success:function(data){
+                        console.log(data);
+                        var json=JSON.parse(data);
+                        if(json.message!="201") {
+                            alert("设置失败，请稍后重试");
+                        }
+                        $("#ulnotesDiv").prop("hidden", false);
+                        $("#dirlockDiv").prop("hidden", true);
+                        $("#dirlockDiv").css("display","none");
+                    }
+                })
+            }
+        }
+
+        function cancledirlock(this1){
+            $("#ulnotesDiv").prop("hidden",true);
+            $("#dirgetlockDiv").prop("hidden",false);
+            $("#dirgetlockDiv").css("display","block");
+            $("#dirlockinp2").attr("thetype","unlockforder")//设置为解锁文件夹标识
+        }
+*/
+        function openforder(this1){
+
+                $(this1).attr("directory");
+                $.ajax({
+					type:"post",
+					url:ctxPath+"getNoteOfDir",
+					data:{
+					    directoryid:$(this1).attr("did"),
+					},
+					success:function(data){
+					    var json=JSON.parse(data);
+					    console.log(json);
+                        $("#ulnotes").empty();
+                        createNoteH(json.notes);
+					}
+				})
+		}
+
+        function createNoteH(json) {
+
+
+            $.each(json,function(i,n){
+                var imgtag="<img id=noteimg"+n.noteid+" src=\""+ctxPath+"img/imgpath.png\"  class=\"float-left zfx\">";
+                if(n.imgs!=null&&n.imgs.length>0){
+                    imgtag="<img id=noteimg"+n.noteid+"  src=\""+$("#ulnotes").attr("imgPath")+"/"+n.imgs[n.imgs.length-1].ingname+"\"  class=\"float-left zfx\">";
+                }
+
+                var mytext="添加阅读锁";
+                var myclick="onelock(this)";
+                if(n.islocked=="yes"){
+                    mytext="取消阅读锁";
+                    myclick="onunlock(this)";
+                }
+
+
+                $("#ulnotes").prepend("<div id=note"+n.noteid+">"+
+                    " <li class=\"list-group-item bg-gray-100 border-0 d-block\" >\n" +
+                    "                    <div class=\"col-12 clearfix \">\n" +
+                    "                    <div class=\"\">\n" +
+                    "                    <i class=\"fa fa-fw fa-book ml-lg-n3 ml-1\"></i>\n" +
+                    "                    <span id=notename"+n.noteid+" class=\"nomal text-dark ml-1\" >"+n.filename+"</span>\n" +
+                    "                    <span class=\"dropdown \" >\n" +
+                    "                    <span data-toggle=\"dropdown\" data-target=notelist"+n.noteid+" style=\"margin-right:10px; float:right; display:block;  height:23px;width:45px;\">\n" +
+                    "                    <i class=\"fa fa-fw fa-align-justify d-block float-right mt-0  \" ></i>\n" +
+                    "                    </span>\n" +
+                    "                    <ul class=\"dropdown-menu dropdown-menu-left\" style=\"min-width:130px;\" id=notelist"+n.noteid+">\n" +
+                    "                    <li>\n" +
+                    "                    <span  class=\"text-decoration-none dropdown-item text-gray-700 small\" onclick=\"openNote(this)\" Noteid=\""+n.noteid+"\"  DirectoryId=\""+n.directoryid+"\" isdelete=\""+n.isdele+"\">打开</span></li>\n" +
+                    "                <li >\n" +
+                    "                <button id=\"myspan\" class=\"text-decoration-none dropdown-item text-gray-700 small\" data-toggle=\"modal\" data-target=\"#renameFile\" style=\"cursor: pointer;\" Noteid="+n.noteid+"  DirectoryId="+n.directoryid +" onclick=\"setspan(this)\">重命名</button></li>\n" +
+                    "                <li>\n" +
+                    "                <span class=\"text-decoration-none dropdown-item text-gray-700 small\">移动到</span></li>\n" +
+                    "                <li>\n" +
+                    "                <span  class=\"text-decoration-none dropdown-item text-gray-700 small\" Noteid="+n.noteid+" DirectoryId="+n.directoryid+" onclick=\"deletenote(this)\">删除</span></li>\n" +
+                    "                <li>\n" +
+                    "                <span  class=\"text-decoration-none dropdown-item text-gray-700 small\" Noted='"+n.noteid+"' DirectoryId='"+n.directoryid+"' onclick='"+myclick+"'></span>"+mytext+"</li>\n" +
+                    "                </ul>\n" +
+                    "                </span>\n" +
+                    "                </span>\n" +
+                    "                </div>\n" +
+                    "           <div class=\"myauto\">"+
+                    "                <a class=\"pt-1 d-block text-decoration-none\">\n" +
+                    "                    <div class=\"col-8 float-left\" >\n" +
+                    "                    <span class=\"d-block rsmall text-gray-500\" style=\"height:55px;\" >"+n.abstractnote+"</span>\n" +
+                    "                	 <span class=\"pt-1 small col-11\" >"+n.updatetime+"</span>\n" +
+                    "                    </div>\n" +imgtag+
+                    "                    </a>" +
+                    "                </div>\n" +
+                    "                    </div>\n" +
+                    "                    </li>" +
+                    "</div>"  );
+            })
+        }
+     /*   function getorunlockford(this1){
+            if($("#dirlockinp2").val()!=""){
+                if($(this1).attr("thetype")=="getDir"){
+                    $.ajax({
+						type:"post",
+						url:"/checkForderPass",//确认输入得密码是否正确
+						data:{
+                            readlock:$("#dirlockinp2").val()
+						},
+						success:function (data){
+						    var json =JSON.parse(data);
+						    if(json.message=="201"){//如果正确，获取该文件夹得所有笔记
+						        $.ajax({
+									type:"post",
+									url:"/getNoteOfDir",
+									data:{
+									    directoryid:$("#forderdid").val()
+									},
+									success:function(data){
+									    var json=JSON.parse(data);
+                                        $("#ulnotesDiv").prop("hidden", false);
+                                        $("#dirgetlockDiv").prop("hidden", true);
+                                        $("#dirgetlockDiv").css("display","none");
+                                        createDir(json.notes);
+									}
+								})
+							}else{
+						        alert("密码错误")
+							}
+						}
+					})
+				}else{
+                    $.ajax({
+						type:"post",
+						url:"/unlockforder",
+						data:{
+
+						}
+					})
+				}
+            }else{
+                alert("请输入密码");
+			}
+		}*/
+
+
+
+        $(function(){
+
+            $("#editorPass").hide();
+            $("#editorAllDiv").show();
+
+			$("#getUserInfo").click(function () {
+			    console.log([[${session.userInfo.userid}]])
+				$.ajax({
+					type:"post",
+					url:ctxPath+"getUserInfo",
+					data:{userid:[[${session.userInfo.userid}]],
+					},
+					success:function (data1) {
+						/*var rs=eval(data);*/
+						var data=JSON.parse(data1)
+						$("#UserInfo_username").val(data.username);
+						$("#UserInfo_email").val(data.email);
+						$("#UserInfo_address").val(data.address);
+                        $("#UserInfo_logo").val(data.logo);
+                        if(data.gender=="0"){
+                            $("#UserInfo_girl").attr("checked",true);
+						}else{
+                            $("#UserInfo_boy").attr("checked",true);
+						}
+                    }
+				})
+            })
+
+			$("#savabutton").click(function() {
+                $.ajax({
+                    type: "post",
+                    url: ctxPath+"uploadNote",
+                    data: {
+                        noteid: $("#editornoteid").val(),
+                        directoryid: $("#editordirectory").val(),
+                        filename: $("#editorfilename").val(),
+                        content: editor.html()
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        var json=JSON.parse(data);
+                        var noteid=$("#editornoteid").val();
+                        console.log(noteid);
+                        if(json.url!="") {
+                            $("#noteimg" + noteid).attr("src", json.url);
+                        }else{
+                            $("#noteimg" + noteid).attr("src",ctxPath+"img/imgpath.png" );
+						}
+                    }
+                })
+            })
+
+			$("#UserInfo_changeUI").click(function () {
+			    console.log($("#UserInfo_form").attr("action"));
+				$.ajax({
+					type:"post",
+					url:$("#UserInfo_form").attr("action"),
+					data:$("#UserInfo_form").serialize(),
+					success:function(data){
+					    console.log(data);
+                    }
+				})
+            })
+
+			$("#clickimg").click(function () {
+			    $("#upheadImg").click();
+			    $("#upheadImg").change(function(){
+			        console.log("haha")
+					/*var formelement=document.querySelector("upheadImg_form");*/
+					var fom=new FormData(document.getElementById("upheadImg_form"));
+                    $.ajax({
+                       type:"post",
+                       url:ctxPath+"upheadimg",
+                       data:fom,
+						processData:false,
+						contentType:false,
+						success:function (data) {
+                           var json=JSON.parse(data);
+                           console.log(json.message);
+                           console.log(json.url);
+                           $("#clickimg").attr("src",json.url);
+                           $("#getUserInfo").attr("src",json.url);
+                        }
+                   })
+                })
+            })
+
+            $("#renameNoteBut").click(function(){
+                if($("#renameNoteName").val()=="") {
+                    alert("设置提示输入不能为空");/*设置提示输入不能为空*/
+                }else{
+                    $.ajax({
+						type:"post",
+						url:ctxPath+"createCheckNote",
+						data:$("#renameNoteForm").serialize(),
+						success:function (data) {
+							console.log(data);
+							var json=JSON.parse(data);
+
+							if(json.statuid=="4002"){
+							   var ms= confirm("文件名重复，是否重命名为 \""+json.message+"\"?");
+							   if(ms==true){
+							       $("#renameNoteName").val(json.message);
+							       $.ajax({
+									   type:"post",
+                                       url:ctxPath+"renameNote",
+                                       data:$("#renameNoteForm").serialize(),
+									   success:function () {
+                                           $("#notename"+$("#reanameNoteId").val()).text($("#renameNoteName").val());
+                                           if($("#ulnotes").attr("noteShowid")==$("#reanameNoteId").val()){
+                                               $("#editorfilename").val($("#renameNoteName").val());
+                                           }
+                                       }
+								   })
+							   }
+							}else{
+							    if(json.statuid=="4001"){
+                                    $("#reanameFileErro").text("程序出错，修改失败");
+								}else if(json.statuid=="2002"){
+							        console.log("2002");
+                                    $.ajax({
+                                        type:"post",
+                                        url:ctxPath+"renameNote",
+                                        data:$("#renameNoteForm").serialize(),
+                                        success:function () {
+                                            $("#notename"+$("#reanameNoteId").val()).text($("#renameNoteName").val());
+                                            if($("#ulnotes").attr("noteShowid")==$("#reanameNoteId").val()){
+                                                $("#editorfilename").val($("#renameNoteName").val());
+                                            }
+                                        }
+                                    })
+								}
+							}
+                        }
+					})
+				}
+            })
+
+
+			$("#createFileBtnm").click(function(){
+			    console.log($(this).attr("defualtForder"));
+			    $("#create_directory").val($(this).attr("defualtForder"));
+			})
+
+
+
+			/*在主目录下新建文件，*/
+			/*每次新建或者打开一个文件，都需要上传当前打开的文件。*/
+			$("#McreateFileBtn").click(function(){
+
+                if($("#create_filename").val()=="") {
+                    alert("设置提示输入不能为空");/*设置提示输入不能为空*/
+                }else{
+                    $.ajax({
+                        type:"post",
+                        url:ctxPath+"createCheckNote",
+                        data:{
+                            filename:$("#create_filename").val(),
+                            directoryid:$("#create_directory").val()
+						},
+                        success:function (data) {
+                            console.log(data);
+                            var json=JSON.parse(data);
+                            if(json.statuid=="4002"){
+                                var ms= confirm("文件名重复，是否重命名为 \""+json.message+"\" ?");
+                                if(ms==true){
+                                    $.ajax({
+                                        type:"post",
+                                        url:ctxPath+"createNote",
+                                        data:{
+                                            filename:json.message,
+                                            directoryid:$("#create_directory").val()
+										},
+                                        success:function (data) {
+                                            console.log(data);
+                                            /*1.添加一个笔记 2.将上一个笔记上传到服务器
+                                            3.设置新建的笔记为当前笔记，以及富文本编辑表单的设置 */
+                                           /* createNoteH(data)*/
+                                            var json=JSON.parse(data);
+                                            createNoteH(json.lists)
+                                            console.log(json.lists);
+                                            $.each(json.lists,function (i,n) {
+                                                console.log(n.filename);
+                                                $("#ulnotes").attr("noteShowid",n.noteid);
+                                                $("#editorfilename").removeAttr("readonly");
+                                                $("#editorfilename").val(n.filename);
+                                                $("#editorfilename").removeAttr("readonly");
+                                                $("#editordirectory").val(n.directoryid);
+                                                $("#editornoteid").val(n.noteid);
+                                                editor.html("");
+                                            })
+                                        }
+                                    })
+                                }
+                            }else{
+                               if(json.statuid=="2002"){
+                                   $.ajax({
+                                       type:"post",
+                                       url:ctxPath+"createNote",
+                                       data:{
+                                           filename:$("#create_filename").val(),
+                                           directoryid:$("#create_directory").val()
+                                       },
+                                       success:function (data) {
+                                           console.log(data);
+                                           /*1.添加一个笔记 2.将上一个笔记上传到服务器
+                                           3.设置新建的笔记为当前笔记，以及富文本编辑表单的设置 */
+
+                                          /* createNoteH(data);*/
+                                           /*2.将上一个笔记上传到服务器*/
+                                           var json=JSON.parse(data);
+                                           if(json.statuid=="2007"){
+                                               console.log(editor.html());
+                                               if($("#editornoteid").val()!="-1") {
+                                                   $.ajax({
+                                                       type: "post",
+                                                       url: ctxPath+"uploadNote",
+                                                       data: {
+                                                           noteid: $("#editornoteid").val(),
+                                                           directoryid: $("#editordirectory").val(),
+                                                           filename: $("#editorfilename").val(),
+                                                           content: editor.html()
+                                                       },
+                                                       success: function (data) {
+                                                           var json = JSON.parse(data);
+                                                           if(json.url!="") {
+                                                               $("#noteimg" +$("#editornoteid").val()).attr("src", json.url);
+                                                           }else{
+                                                               $("#noteimg" + $("#editornoteid").val()).attr("src",ctxPath+"img/imgpath.png" );
+                                                           }
+                                                       }
+                                                   })
+                                               }
+                                           }
+                                            /*3.设置新建的笔记为当前笔记，以及富文本编辑表单的设置*/
+                                           	createNoteH(json.lists)
+                                            console.log(json.lists);
+                                            $.each(json.lists,function (i,n) {
+                                                console.log(n.filename);
+                                                $("#ulnotes").attr("noteShowid",n.noteid);
+                                                $("#editorfilename").removeAttr("readonly");
+                                                $("#editorfilename").val(n.filename);
+                                                $("#editorfilename").removeAttr("readonly");
+                                                $("#editordirectory").val(n.directoryid);
+                                                $("#editornoteid").val(n.noteid);
+                                                editor.html("");
+                                            })
+                                       }
+
+                                   })
+                                }
+                            }
+                        }
+                    })
+                }
+			})
+
+			$("#getAllDeletes").click(function(){
+			    $.ajax({
+					type:"post",
+					url:ctxPath+"getAllDeletes",
+					success:function(data1){
+					    console.log(data1);
+					   var json=JSON.parse(data1);
+                        $("#recycal").empty();
+                        createDeleteNotes(json.notes);
+                        createDeleteDirs(json.dris);
+					}
+				})
+			})
+			
+			function createNoteH(json) {
+
+
+			   	$.each(json,function(i,n){
+                    var imgtag="<img id=noteimg"+n.noteid+" src=\""+ctxPath+"img/imgpath.png\"  class=\"float-left zfx\">";
+			   	    if(n.imgs!=null&&n.imgs.length>0){
+						imgtag="<img id=noteimg"+n.noteid+"  src=\""+ctxPath+$("#ulnotes").attr("imgPath")+"/"+n.imgs[n.imgs.length-1].ingname+"\"  class=\"float-left zfx\">";
+					}
+
+					var mytext="添加阅读锁";
+			   	    var myclick="onelock(this)";
+			   	    if(n.islocked=="yes"){
+			   	        mytext="取消阅读锁";
+			   	        myclick="onunlock(this)";
+					}
+
+
+                    $("#ulnotes").prepend("<div id=note"+n.noteid+">"+
+					" <li class=\"list-group-item bg-gray-100 border-0 d-block\" >\n" +
+                    "                    <div class=\"col-12 clearfix \">\n" +
+                    "                    <div class=\"\">\n" +
+                    "                    <i class=\"fa fa-fw fa-book ml-lg-n3 ml-1\"></i>\n" +
+                    "                    <span id=notename"+n.noteid+" class=\"nomal text-dark ml-1\" >"+n.filename+"</span>\n" +
+                    "                    <span class=\"dropdown \" >\n" +
+                    "                    <span data-toggle=\"dropdown\" data-target=notelist"+n.noteid+" style=\"margin-right:10px; float:right; display:block;  height:23px;width:45px;\">\n" +
+                    "                    <i class=\"fa fa-fw fa-align-justify d-block float-right mt-0  \" ></i>\n" +
+                    "                    </span>\n" +
+                    "                    <ul class=\"dropdown-menu dropdown-menu-left\" style=\"min-width:130px;\" id=notelist"+n.noteid+">\n" +
+                    "                    <li>\n" +
+                    "                    <span  class=\"text-decoration-none dropdown-item text-gray-700 small\" onclick=\"openNote(this)\" Noteid=\""+n.noteid+"\"  DirectoryId=\""+n.directoryid+"\" isdelete=\""+n.isdele+"\">打开</span></li>\n" +
+                    "                <li >\n" +
+                    "                <button id=\"myspan\" class=\"text-decoration-none dropdown-item text-gray-700 small\" data-toggle=\"modal\" data-target=\"#renameFile\" style=\"cursor: pointer;\" Noteid="+n.noteid+"  DirectoryId="+n.directoryid +" onclick=\"setspan(this)\">重命名</button></li>\n" +
+                    "                <li>\n" +
+                    "                <span class=\"text-decoration-none dropdown-item text-gray-700 small\">移动到</span></li>\n" +
+                    "                <li>\n" +
+                    "                <span  class=\"text-decoration-none dropdown-item text-gray-700 small\" Noteid="+n.noteid+" DirectoryId="+n.directoryid+" onclick=\"deletenote(this)\">删除</span></li>\n" +
+                    "                <li>\n" +
+                    "                <span  class=\"text-decoration-none dropdown-item text-gray-700 small\" Noted='"+n.noteid+"' DirectoryId='"+n.directoryid+"' onclick='"+myclick+"'>"+mytext+"</span></li>\n" +
+                    "                </ul>\n" +
+                    "                </span>\n" +
+                    "                </span>\n" +
+                    "                </div>\n" +
+						"           <div class=\"myauto\">"+
+                    "                <a class=\"pt-1 d-block text-decoration-none\">\n" +
+                    "                    <div class=\"col-8 float-left\" >\n" +
+                    "                    <span class=\"d-block rsmall text-gray-500\" style=\"height:55px;\" >"+n.abstractnote+"</span>\n" +
+                    "                	 <span class=\"pt-1 small col-11\" >"+n.updatetime+"</span>\n" +
+                    "                    </div>\n" +imgtag+
+                    "                    </a>" +
+						"                </div>\n" +
+                    "                    </div>\n" +
+                    "                    </li>" +
+						"</div>"  );
+               })
+            }
+            
+            function createDeleteNotes(data){
+                console.log(data);
+                $.each(data,function (i,n) {
+                    $("#recycal").prepend(
+                        "<span class=\"collapse-item rsmall col-9 ml-4\" id=\"rnote"+n.noteid+"\">\n" +
+                        "            <span class=\"col-6 d-inline-block text-center\"  style=\"cursor: pointer;height: 25px;\" id=\"rfilename"+n.noteid+"\">\n" +
+                        "            	<i class=\"fa fa-fw fa-file-code\"></i> "+n.filename+"\n" +
+                        "            </span>" +
+                        "            <span class=\"dropdown\" style=\"min-width:150px;\">" +
+                        "              <a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">\n" +
+                        "            <span class=\"caret ml-2\"></span>\n" +
+                        "          </a>\n" +
+                        "         <ul class=\"dropdown-menu\" style=\"min-width:130px;\">\n" +
+                        "            \t\t\t<li>\n" +
+                        "                \t\t\t<span class=\"text-decoration-none dropdown-item text-gray-700 small\" noteid=\""+n.noteid+"\" onclick=\"rollback(this)\"><i class=\"fa fa-fw fa-plus\"></i>恢复</span>\n" +
+                        "            \t\t\t</li>\n" +
+                        "            \t\t\t<li>\n" +
+                        "                \t\t\t<span class=\"text-decoration-none dropdown-item text-gray-700 small\" noteid=\""+n.noteid+"\" onclick=\"deleteReally(this)\"><i class=\"fa fa-fw fa-minus\"></i>删除</span>\n" +
+                        "            \t\t\t</li>\n" +
+                        "         </ul>\n" +
+                        "       </span>\n" +
+                        "</span>"
+				);
+                })
+			}
+
+			function createDeleteDirs(data){
+                console.log(data);
+                $.each(data,function(i,n){
+                    $("#recycal").prepend("<span class=\"collapse-item rsmall col-9 ml-4\">\n" +
+                        "            \t<span id=\"deleteDir"+n.directory+"\" class=\"col-6 d-inline-block text-center\"  style=\"cursor: pointer;height: 25px;\">\n" +
+                        "            \t\t<i class=\"fa fa-fw fa-folder\"></i> "+n.directory+"\n" +
+                        "            \t</span>\n" +
+                        "            \t<span class=\"dropdown\" style=\"min-width:150px;\">\n" +
+                        "\t\t\t\t\t<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">\n" +
+                        "\t\t\t\t\t\t<span class=\"caret ml-2\"></span>\n" +
+                        "\t\t\t\t\t</a>\n" +
+                        "\t\t\t\t\t<ul class=\"dropdown-menu\" style=\"min-width:130px;\">\n" +
+                        "\t\t\t\t\t\t<li>\n" +
+                        "\t\t\t\t\t\t\t<span  class=\"text-decoration-none dropdown-item text-gray-700 small\" directoryid=\""+n.directoryid+"\" onclick=\"rollDBack(this)\"><i class=\"fa fa-fw fa-folder-plus\" ></i>恢复</span>\n" +
+                        "            \t\t\t</li>\n" +
+                        "            \t\t\t<li>\n" +
+                        "\t\t\t\t\t\t\t<span  class=\"text-decoration-none dropdown-item text-gray-700 small\" directoryid=\""+n.directoryid+"\" onclick=\"deleteDReally(this)\"><i class=\"fa fa-fw fa-folder-minus\" ></i>删除</span>\n" +
+                        "            \t\t\t</li>\n" +
+                        "\t\t\t\t\t</ul>\n" +
+                        "\t\t\t\t</span>\n" +
+                        "\t\t\t  </span>");
+				})
+			}
+            /*打开文件分两种情况，
+            	非查询条件下的打开，
+            		通过id查询文件内容显示在富文本框中，以及设置当前打开状态
+            	以及查询条件下地打开
+            		通过id得到文件内容，高亮处理，返回页面。设置当前打开状态
+            	*/
+
+            /*查询笔记*/
+            $("#seache").click("input",function(){
+				console.log($("#seachinput").val());
+
+				$.ajax({
+					type:"post",
+					url:ctxPath+"search",
+					data:{
+					    search:$("#seachinput").val(),
+						directoryid:$("#seachDid").val()
+					},
+					success:function(data){
+					    console.log(data);
+                        $("#ulnotes").empty();
+					    var json=JSON.parse(data);
+					    createNoteH(json.lists);
+					    if(json.lists.length>0) {
+                            $("#ulnotes").attr("noteShowid", json.lists[0].noteid);
+                            $("#editorfilename").prop("readonly",false);
+                            $("#editorfilename").val(json.lists[0].filename);
+                            $("#editorfilename").prop("readonly",true);
+                            $("#editordirectory").val(json.lists[0].directoryid);
+                            $("#editornoteid").val(json.lists[0].noteid);
+                            editor.html(json.content);
+                        }else{
+                            $("#ulnotes").attr("noteShowid", "no");
+                            $("#editordirectory").val("no");
+                            $("#editorfilename").prop("readonly",false);
+                            $("#editorfilename").val("");
+                            $("#editorfilename").prop("readonly",true);
+                            editor.html("");
+                            $("#editornoteid").val("-1");
+						}
+
+					}
+				})
+			})
+
+			function setfustatu(data){
+                var json=JSON.parse(data);
+                console.log(json.lists);
+                $.each(json.lists,function (i,n) {
+                    console.log(n.filename);
+                    $("#ulnotes").attr("noteShowid",n.noteid);
+                    $("#editorfilename").removeAttr("readonly");
+                    $("#editorfilename").val(n.filename);
+                    $("#editorfilename").removeAttr("readonly");
+                    $("#editordirectory").val(n.directoryid);
+                    $("#editornoteid").val(n.noteid);
+                    editor.html("");
+                })
+            }
+
+            $("#getAllNotes").click(function () {
+                $("#seachDid").val("");
+                $.ajax({
+					type:"post",
+					url:ctxPath+"getAllNotes",
+					success:function(data){
+					    var json=JSON.parse(data);
+                        $("#ulnotes").empty();
+					    createNoteH(json.notes);
+                        $("#ulnotes").attr("noteShowid",json.note.noteid);
+                        $("#editorfilename").removeAttr("readonly");
+                        $("#editorfilename").val(json.note.filename);
+                        $("#editorfilename").removeAttr("readonly");
+                        $("#editordirectory").val(json.note.directoryid);
+                        $("#editornoteid").val(json.note.noteid);
+                        editor.html(json.content);
+
+					}
+				})
+            })
+
+			$("#showbutton").click(function(){
+			    $.ajax({
+			        type:"post",
+					url:ctxPath+"showNote",
+					dataType:"html",
+					data:{
+			            noteid:$("#editornoteid").val(),
+			            filename:$("#editorfilename").val(),
+						directoryid:$("#editordirectory").val()
+					},
+					success:function(data){
+			            console.log(data);
+			            var json=JSON.parse(data);
+			            window.location.href=json.href;
+					}
+				})
+			})
+
+            $("#editorPassSure").click(function() {
+                if ($("#editorpassword").val() != "") {
+                    $.ajax({
+                        type: "post",
+                        url: ctxPath+"checkReadPass",
+                        data: {
+                            readlock: $("#editorpassword").val(),
+							flag:$("#editorPassSure").attr("flag"),
+                        },
+                        success: function(data) {
+                            var json = JSON.parse(data);
+                            console.log(json);
+                            if (json.message == "201") {//打开
+                                $("#editorAllDiv").prop("hidden",false);
+                                $("#editorPass").prop("hidden",true);
+                                $.ajax({
+                                    type: "get",
+                                    url: ctx+"openNote",
+                                    data: {
+                                        seachinput: $("#seachinput").val(),
+                                        noteid: noteid1,
+                                        directoryid: directory1,
+                                        filename: filename1
+                                    },
+                                    success: function (data) {
+                                        console.log(data);
+                                        var json = JSON.parse(data);
+                                        $("#editornoteid").val(noteid1);
+                                        $("#editordirectory").val(directory1);
+                                        $("#editorfilename").val($("#notename" + noteid1).text());
+                                        editor.html(json.content);
+                                        $("#ulnotes").attr("noteShowid", noteid1);
+
+                                    }
+                                })
+                            }else if(json.message == "202"){//取消锁
+								console.log(noteidUnlock);
+                                $.ajax({
+                                    type:"post",
+									url:ctxPath+"setUnlock",
+                                    data: {
+                                        noteid: noteidUnlock,
+                                    },
+									success:function(data){
+                                        console.log(data);
+                                        var json=JSON.parse(data);
+                                        if(json.message=="201"){
+											/*设置onclick方法改变为onelock*/
+											$("#editorAllDiv").prop("hidden",false);
+                                            $("#editorAllDiv").css("display","block");
+                                            $("#editorPass").prop("hidden",true);
+										}
+
+									}
+								})
+							}
+                        }
+                    })
+                } else {
+                    alert("请输入密码");
+                }
+            })
+
+			$("#lockbutton").click(function(){
+			    if($("#editornoteid").val()==-1){
+			        alert("未打开文件")
+				}else{
+
+                    /*<![CDATA[*/
+                    var readlock = [[${session.userInfo.readlock}]];
+                    console.log(readlock);
+                    if(readlock==null){
+                        /*将设置密码界面显示出来*/
+                        $("#editorAllDiv").prop("hidden",true);
+                        $("#setPass").prop("hidden",false);
+                        $("#setPass").css("display","block");
+					}else{
+                        /*直接发请求，将笔记的id传过去，*/
+                        $.ajax({
+							type:"post",
+							url:"/lock",
+							data:{
+							    noteid:$("#editornoteid").val()
+							},
+							success:function(data){
+							    var json =JSON.parse(data);
+							    if(json.message=201){
+							        $("#editorAllDiv").prop("hidden",true);
+							        $("#editorPass").prop("hidden",false);
+							        $("#editorPass").css("display","block");
+								}else{
+							        alert("设置出错，稍后再试");
+								}
+							}
+						})
+					}
+
+                    /*]]>*/
+
+				}
+			})
+
+			$("#setReadPassB").click(function () {
+				var password=$("#seditorpassword").val();
+				var passwordre=$("#seditorpasswordre").val();
+				if(password==""||passwordre==""){
+				    alert("请输入密码");
+				}else if(passwordre!=password){
+				    alert("密码不一致，请重新输入")
+				}else{
+				    $.ajax({
+						type:"post",
+						url:ctxPath+"setReadPass",
+						data:{
+						    readlock:$("#seditorpassword").val(),
+						},
+						success:function(data){
+						    console.log(data);
+						    var json=JSON.parse(data);
+						    if(json.message!="201") {
+                                alert("设置失败，请稍后重试");
+                            }
+                            $("#editorAllDiv").prop("hidden", false);
+                            $("#setPass").prop("hidden", true);
+                            $("#setPass").css("display","none");
+						}
+					})
+				}
+
+            })
+
+
+
+			$("#createForder").click(function(){
+			    var directory=$("#createForderInp").val();
+			    if(directory==""){
+			        alert("请输入文件夹名")
+				}else{
+			        $.ajax({
+						type:"post",
+						url:ctxPath+"checkAndCreDir",
+						data:{
+                            directory:directory,
+						},
+						success:function(data){
+
+						    var json=JSON.parse(data);
+						    if(json.message=="201"){
+						        console.log(json.directory);
+						        var rs=confirm("已存在该文件夹，是否更名为"+json.directory);
+						        if(rs){
+                                    $.ajax({
+                                        type: "post",
+                                        url: ctxPath+"checkAndCreDir",
+                                        data: {
+                                            directory: json.directory,
+                                        },
+										success:function(data){
+                                            var json=JSON.parse(data);
+                                            if(json.message=="202") {
+                                            }
+                                            /**/
+										}
+                                    })
+								}
+							}
+
+                            $.ajax({
+                                type: "post",
+                                url: ctxPath+"getAllDir",
+                                success: function (data) {
+                                    console.log(data);
+                                    var json = JSON.parse(data);
+                                    if (json.dirs.length > 0) {
+                                        $("#dirbox").empty()
+                                        createDir(json);
+                                    }
+                                }
+                            })
+						}
+					})
+				}
+			})
+
+			$("#myDirectory").click(function(){
+			    $.ajax({
+					type:"post",
+					url:ctxPath+"getAllDir",
+					success:function(data){
+					    console.log(data);
+					    var json=JSON.parse(data);
+					    if(json.dirs.length>0){
+					        $("#dirbox").empty()
+                            createDir(json);
+						}
+					}
+				})
+			})
+
+
+			$("#renameForderBtn").click(function(){
+                var directory=$("#reForderName").val();
+                var directoryid=$("#reForderdid").val();
+                console.log(directoryid+" "+directory);
+                if(directory==""){
+                    alert("请输入文件夹名")
+                }else{
+                    $.ajax({
+                        type:"post",
+                        url:ctxPath+"renameDir",
+                        data:{
+                            directory:directory,
+							directoryid:directoryid
+                        },
+                        success:function(data){
+
+                            var json=JSON.parse(data);
+                            if(json.message=="201"){
+                                console.log(json.directory);
+                                var rs=confirm("已存在该文件夹，是否更名为"+json.directory);
+                                if(rs){
+                                    $.ajax({
+                                        type: "post",
+                                        url: ctxPath+"renameDir",
+                                        data: {
+                                            directory: json.directory,
+                                            directoryid:directoryid,
+                                        },
+                                        success:function(data){
+                                            var json=JSON.parse(data);
+                                            if(json.message=="202") {
+                                            }
+                                            /**/
+                                        }
+                                    })
+                                }
+                            }
+
+                            $.ajax({
+                                type: "post",
+                                url: ctxPath+"getAllDir",
+                                success: function (data) {
+                                    console.log(data);
+                                    var json = JSON.parse(data);
+                                    if (json.dirs.length > 0) {
+                                        $("#dirbox").empty()
+                                        createDir(json);
+                                    }
+                                }
+                            })
+
+                        }
+                    })
+                }
+			})
+
+			function createDir(data){
+			    $.each(data.dirs,function(i,n){
+                    $("#dirbox").prepend(" <div id=\"dir"+n.directoryid+"\">\n" +
+                        "\t\t\t\t  <span class=\"collapse-item rsmall col-9 ml-4\">\n" +
+                        "\t\t\t\t\t  <span class=\"col-6 d-inline-block text-center\"  style=\"cursor: pointer;height: 25px;\"  onclick='openforder(this)' did=\""+n.directoryid+"\">"+n.directory+"</span>\n" +
+                        "\t\t\t\t\t  <span class=\"dropdown\" style=\"min-width:150px;\">\n" +
+                        "\t\t\t\t\t\t  <a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">\n" +
+                        "\t\t\t\t\t\t\t  <span class=\"caret ml-2\"></span>\n" +
+                        "\t\t\t\t\t\t  </a>\n" +
+                        "\t\t\t\t\t\t  <ul class=\"dropdown-menu\" style=\"min-width:130px;\">\n" +
+                        "\t\t\t\t\t\t\t  <li>\n" +
+                        "\t\t\t\t\t\t\t\t  <span class=\"dropdown-item text-gray-700 small\" data-toggle=\"modal\" data-target=\"#createFile\" style=\"cursor:pointer;\" 	did=\""+n.directoryid+"\" onclick=\"newNoteInD(this)\"> 新建笔记</span>\n" +
+                        "        \t\t\t\t\t\t<!--点击调用模态框，根据具体某个按钮设置文件夹信息-->\n" +
+                        "\t\t\t\t\t\t\t  </li>\n" +
+                        "\t\t\t\t\t\t\t  <li>\n" +
+                        "\t\t\t\t\t\t\t\t  <span class=\"dropdown-item text-gray-700 small\">新建MarkDown</span>\n" +
+                        "\t\t\t\t\t\t\t  </li>\n" +
+                        "\t\t\t\t\t\t\t  <li style=\"cursor:pointer;\">\n" +
+                        "\t\t\t\t\t\t\t\t  <span data-toggle=\"modal\" data-target=\"#renameFoder\" class=\"text-decoration-none dropdown-item text-gray-700 small\" did=\""+n.directoryid+"\" onclick='renameForder(this)'>重命名</span>\n" +
+                        "\t\t\t\t\t\t\t  </li>\n" +
+                        "\t\t\t\t\t\t\t  <li>\n" +
+                        "\t\t\t\t\t\t\t\t   <span onclick='deleteForder(this)' did=\""+ n.directoryid+"\" class=\"text-decoration-none dropdown-item text-gray-700 small\">删除</span>\n" +
+                        "\t\t\t\t\t\t\t  </li>\n" +
+                        "\t\t\t\t\t\t\t  <li>\n" +
+                        "\t\t\t\t\t\t\t  </li>\n" +
+                        "        \t\t\t\t</ul>\n" +
+                        "\t\t\t\t\t  </span>\n" +
+                        "\t\t\t\t  </span>\n" +
+                        "\t\t\t  </div>")
+				})
+
+			}
+
+
+
+
+			$("#abstrac").click(function(){
+				$(".myauto").show();
+			})
+
+			$("#list").click(function(){
+			    $(".myauto").hide();
+			})
+        })
+
+
+
+  </script>
+        
+        
+
+</body>
+
+</html>
